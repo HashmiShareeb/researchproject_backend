@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS rides (
+    ride_id SERIAL PRIMARY KEY,
+    ride_name VARCHAR(255) NOT NULL,
+    ride_status VARCHAR(50) NOT NULL CHECK (ride_status IN ('AVAILABLE', 'OCCUPIED', 'IN_TRANSIT', 'MAINTENANCE', 'OUT_OF_SERVICE')),
+    ride_price DECIMAL(10, 2) NOT NULL
+);
+
