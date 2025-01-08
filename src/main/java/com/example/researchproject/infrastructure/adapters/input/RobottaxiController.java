@@ -1,14 +1,13 @@
-package com.example.researchproject.application.ports.in;
+package com.example.researchproject.infrastructure.adapters.input;
 
 import com.example.researchproject.domain.models.Rides;
-import com.example.researchproject.domain.services.RiderService;
+import com.example.researchproject.application.ports.services.RiderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api")
@@ -36,7 +35,7 @@ public class RobottaxiController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void addRide(@RequestBody Rides ride) {
-        riderService.AddRide(ride);
+        riderService.CreateRide(ride);
     }
 
     // Delete a ride by its ID

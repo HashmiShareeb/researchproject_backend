@@ -2,6 +2,7 @@ package com.example.researchproject.domain.models;
 
 import com.example.researchproject.domain.models.enums.RideStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 

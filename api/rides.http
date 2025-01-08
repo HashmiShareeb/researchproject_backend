@@ -1,0 +1,20 @@
+POST localhost:8080/api/rides
+content-type: application/json
+
+{
+  "name": "Ride 1",
+  "description": "Ride 1 description",
+  "duration": 60,
+  "distance": 30,
+  "price": 100
+}
+
+
+###
+
+### 2. Get all rides
+GET localhost:8080/api/rides
+
+### 3. Get ride by id
+GET localhost:8080/api/rides/1
+

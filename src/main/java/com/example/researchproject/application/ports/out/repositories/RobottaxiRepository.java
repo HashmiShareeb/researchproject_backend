@@ -1,4 +1,4 @@
-package com.example.researchproject.domain.repositories;
+package com.example.researchproject.application.ports.out.repositories;
 
 public interface RobottaxiRepository {
 
