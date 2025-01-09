@@ -4,7 +4,7 @@ package com.example.researchproject.application.ports.services;
 import com.example.researchproject.application.ports.in.RideUseCase;
 import com.example.researchproject.application.ports.out.repositories.RideRepository;
 import com.example.researchproject.domain.exceptions.RideNotFoundException;
-import com.example.researchproject.domain.models.Rides;
+import com.example.researchproject.domain.models.Ride;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,22 +17,22 @@ public class RiderService implements RideUseCase {
     private RideRepository riderRepo;
 
     @Override
-    public Rides CreateRide(Rides ride) {
+    public Ride CreateRide(Ride ride) {
         return riderRepo.save(ride);
     }
 
     @Override
-    public Rides getRidesByDriverId(Long driverId) {
+    public Ride getRidesByDriverId(Long driverId) {
         return null;
     }
 
     @Override
-    public List<Rides> GetRides() {
+    public List<Ride> GetRides() {
         return riderRepo.findAll();
     }
 
     @Override
-    public Rides GetRideById(Long riderId) {
+    public Ride GetRideById(Long riderId) {
         return riderRepo.findById(riderId).orElseThrow(
                 () -> new RideNotFoundException("Ride with id " + riderId + " not found or does not exist")
         );
@@ -44,12 +44,12 @@ public class RiderService implements RideUseCase {
     }
 
     @Override
-    public Rides UpdateRide(Rides ride) {
+    public Ride UpdateRide(Ride ride) {
         return riderRepo.save(ride);
     }
 
     @Override
-    public Rides GetRideDetails(Long rideId) {
+    public Ride GetRideDetails(Long rideId) {
         return riderRepo.findById(rideId).orElse(null);
     }
 

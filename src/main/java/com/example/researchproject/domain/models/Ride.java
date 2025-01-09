@@ -2,14 +2,13 @@ package com.example.researchproject.domain.models;
 
 import com.example.researchproject.domain.models.enums.RideStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "rides")
-public class Rides {
+public class Ride {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
@@ -41,7 +40,7 @@ public class Rides {
     }
 
 
-    public Rides(String rideName, RideStatus rideStatus, BigDecimal ridePrice, String rideDescription, LocalDateTime createdAt) {
+    public Ride(String rideName, RideStatus rideStatus, BigDecimal ridePrice, String rideDescription, LocalDateTime createdAt) {
         this.rideName = rideName;
         this.rideStatus = rideStatus;
         this.ridePrice = ridePrice;
@@ -98,7 +97,7 @@ public class Rides {
     }
 
     // Default constructor (required by Hibernate) - protected so that it's not callable from outside
-    protected Rides() {
+    protected Ride() {
     }
 
     @Override
