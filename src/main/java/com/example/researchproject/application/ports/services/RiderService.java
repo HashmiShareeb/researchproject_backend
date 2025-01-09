@@ -3,6 +3,7 @@ package com.example.researchproject.application.ports.services;
 
 import com.example.researchproject.application.ports.in.RideUseCase;
 import com.example.researchproject.application.ports.out.repositories.RideRepository;
+import com.example.researchproject.domain.exceptions.RideNotFoundException;
 import com.example.researchproject.domain.models.Rides;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,9 @@ public class RiderService implements RideUseCase {
 
     @Override
     public Rides GetRideById(Long riderId) {
-        return riderRepo.findById(riderId).orElse(null);
+        return riderRepo.findById(riderId).orElseThrow(
+                () -> new RideNotFoundException("Ride with id " + riderId + " not found or does not exist")
+        );
     }
 
     @Override

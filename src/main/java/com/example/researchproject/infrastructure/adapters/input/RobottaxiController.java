@@ -23,18 +23,16 @@ public class RobottaxiController {
     }
     // Get a ride by its ID
     @GetMapping("/rides/{rideId}")
-    public ResponseEntity<Rides> findById(@PathVariable Long rideId) {
+    public ResponseEntity<Rides> getRideById(@PathVariable Long rideId) {
         Rides ride = riderService.GetRideById(rideId);
-        if (ride != null) {
-            return ResponseEntity.ok(ride);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(ride);
     }
 
     // Add a new ride
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public void addRide(@RequestBody Rides ride) {
+
         riderService.CreateRide(ride);
     }
 

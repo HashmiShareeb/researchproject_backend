@@ -2,11 +2,10 @@ POST localhost:8080/api/rides
 content-type: application/json
 
 {
-  "name": "Ride 1",
-  "description": "Ride 1 description",
-  "duration": 60,
-  "distance": 30,
-  "price": 100
+  "rideName": "Waymo One",
+  "rideStatus": "REQUESTED",
+  "ridePrice": 284,
+  "rideDescription": null
 }
 
 

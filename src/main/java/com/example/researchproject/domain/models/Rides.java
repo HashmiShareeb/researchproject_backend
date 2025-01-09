@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "rides")
@@ -25,11 +26,27 @@ public class Rides {
     @Column(name = "ride_price", nullable = false)
     private BigDecimal ridePrice;
 
+    @Column(name = "ride_description", nullable = true)
+    private String rideDescription;
 
-    public Rides(String rideName, RideStatus rideStatus, BigDecimal ridePrice) {
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist // Before inserting a new record, set the creation date to the current date and time
+    public void setDefaultCreatedAt() {
+        // Set the creation date to the current date and time if it's not set
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
+    }
+
+
+    public Rides(String rideName, RideStatus rideStatus, BigDecimal ridePrice, String rideDescription, LocalDateTime createdAt) {
         this.rideName = rideName;
         this.rideStatus = rideStatus;
         this.ridePrice = ridePrice;
+        this.rideDescription = rideDescription;
+        this.createdAt = createdAt;
     }
 
     public Long getRideId() {
@@ -64,6 +81,22 @@ public class Rides {
         this.ridePrice = ridePrice;
     }
 
+    public String getRideDescription() {
+        return rideDescription;
+    }
+
+    public void setRideDescription(String rideDescription) {
+        this.rideDescription = rideDescription;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     // Default constructor (required by Hibernate) - protected so that it's not callable from outside
     protected Rides() {
     }
@@ -75,6 +108,8 @@ public class Rides {
                 ", rideName='" + rideName + '\'' +
                 ", rideStatus=" + rideStatus +
                 ", ridePrice=" + ridePrice +
+                ", rideDescription='" + rideDescription + '\'' +
+                ", createdAt='" + createdAt + '\'' +
                 '}';
     }
 }
