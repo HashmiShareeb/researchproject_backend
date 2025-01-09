@@ -1,40 +1,59 @@
 package com.example.researchproject.domain.models;
 import com.example.researchproject.domain.models.enums.VehichleStatus;
+import jakarta.persistence.*;
 
-
+@Entity
+@Table(name = "vehicle")
 public class Vehicle {
-    private Long vehicleId;
-    private String brand;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "vehicle_id", nullable = false, unique = true)
+    private String vehicleId;
+    @Column
+    private String manufacturer;
+    @Column
     private String model;
+    @Column(name = "license_plate")
     private String licensePlate;
+    @Column
     private Integer year;
-    private Driver driver;
+    @Column(nullable = true, name = "battery_level")
+    private Integer batteryLevel;
+    //foreign key to owner
+    @ManyToOne
+    @JoinColumn(name = "owner_id", nullable = false) //many vehicles to one owner --> child
+    private Owner owner;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "vehicle_status", nullable = false)
     private VehichleStatus vehicleStatus;
 
+    protected Vehicle() {
+    }
 
-    public Vehicle(String brand, String model, String licensePlate, Integer year, Driver driver, VehichleStatus vehicleStatus) {
-        this.brand = brand;
+    public Vehicle(String manufacturer, String model, String licensePlate, Integer year, VehichleStatus vehicleStatus, Owner owner) {
+        this.manufacturer = manufacturer;
         this.model = model;
         this.licensePlate = licensePlate;
         this.year = year;
-        this.driver = driver;
         this.vehicleStatus = vehicleStatus;
+        this.owner = owner;
     }
 
-    public Long getVehicleId() {
+    public String getVehicleId() {
         return vehicleId;
     }
 
-    public void setVehicleId(Long vehicleId) {
+    public void setVehicleId(String vehicleId) {
         this.vehicleId = vehicleId;
     }
 
-    public String getBrand() {
-        return brand;
+    public String getManufacturer() {
+        return manufacturer;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 
     public String getModel() {
@@ -61,14 +80,6 @@ public class Vehicle {
         this.year = year;
     }
 
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
-    }
-
 
     public VehichleStatus getVehicleStatus() {
         return vehicleStatus;
@@ -77,6 +88,36 @@ public class Vehicle {
     public void setVehicleStatus(VehichleStatus vehicleStatus) {
         this.vehicleStatus = vehicleStatus;
     }
-    protected Vehicle() {
+
+    public Owner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+
+
+    public Integer getBatteryLevel() {
+        return batteryLevel;
+    }
+
+    public void setBatteryLevel(Integer batteryLevel) {
+        this.batteryLevel = batteryLevel;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "vehicleId=" + vehicleId +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", model='" + model + '\'' +
+                ", licensePlate='" + licensePlate + '\'' +
+                ", year=" + year +
+                ", batteryLevel=" + batteryLevel +
+                ", vehicleStatus=" + vehicleStatus +
+                ", owner=" + (owner != null ? owner.getOwnerId() : null) +
+                '}';
     }
 }
