@@ -39,4 +39,7 @@ public class OwnerService {
     public Owner findById(String id) {
         return ownerRepo.findById(id).orElse(null);
     }
+
+
+
 }
