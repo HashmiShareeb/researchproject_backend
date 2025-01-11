@@ -1,9 +1,12 @@
 package com.example.researchproject.domain.models;
 import com.example.researchproject.domain.models.enums.VehichleStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "vehicle")
+//@JsonInclude(JsonInclude.Include.ALWAYS) //alleen voor niet lege waarden
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -20,8 +23,9 @@ public class Vehicle {
     @Column(nullable = true, name = "battery_level")
     private Integer batteryLevel;
     //foreign key to owner
-    @ManyToOne
-    @JoinColumn(name = "owner_id", nullable = false) //many vehicles to one owner --> child
+    @ManyToOne //many vehicles to one owner --> child
+    @JoinColumn(name = "owner_id", nullable = true) // Allow owner to be null
+    @JsonBackReference // Prevent JSON infinite looping
     private Owner owner;
 
     @Enumerated(EnumType.STRING)

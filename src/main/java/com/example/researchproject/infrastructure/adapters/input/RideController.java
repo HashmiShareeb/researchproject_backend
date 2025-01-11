@@ -1,8 +1,7 @@
 package com.example.researchproject.infrastructure.adapters.input;
 
-import com.example.researchproject.domain.exceptions.RideNotFoundException;
 import com.example.researchproject.domain.models.Ride;
-import com.example.researchproject.application.ports.services.RiderService;
+import com.example.researchproject.application.services.RiderService;
 import com.example.researchproject.domain.models.enums.RideStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,16 +58,4 @@ public class RideController {
 
 }
 
-@ControllerAdvice
-class GlobalExceptionHandler {
 
-    @ExceptionHandler(RideNotFoundException.class)
-    public ResponseEntity<String> handleRideNotFoundException(RideNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGenericException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
-    }
-}

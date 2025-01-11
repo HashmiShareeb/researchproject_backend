@@ -1,7 +1,7 @@
 package com.example.researchproject.infrastructure.adapters.input.out;
 
-import com.example.researchproject.application.ports.services.OwnerService;
-import com.example.researchproject.application.ports.services.VehicleService;
+import com.example.researchproject.application.services.OwnerService;
+import com.example.researchproject.application.services.VehicleService;
 import com.example.researchproject.domain.models.Owner;
 import com.example.researchproject.domain.models.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,22 +17,31 @@ public class CarController {
 
     @Autowired
     OwnerService ownerService;
+
+    @Autowired
     VehicleService vehicleService;
 
     //OWNERS
+
     @GetMapping("/api/owners")
     public ResponseEntity<List<Owner>> getAllOwners() {
         List<Owner> owners = ownerService.getOwners();
+        owners.forEach(owner -> {
+            // Remove vehicles if the list is empty
+            if (owner.getVehicle().isEmpty()) {
+                owner.setVehicle(null);
+            }
+        });
         return ResponseEntity.ok(owners);
     }
 
+
     @GetMapping("/api/owners/{ownerId}")
-    public ResponseEntity<Owner> getOwner(@PathVariable String ownerId) {
+    public ResponseEntity<Owner> getOwnerById(@PathVariable String ownerId) {
         Owner owner = ownerService.findById(ownerId);
         return ResponseEntity.ok(owner);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/api/owners")
     public ResponseEntity<?> createOwner(@RequestBody Owner owner) {
         try {
@@ -43,7 +52,6 @@ public class CarController {
         }
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/api/owners/{ownerId}")
     public void deleteOwner(@PathVariable String ownerId) {
         ownerService.DeleteOwner(ownerId);
@@ -56,19 +64,11 @@ public class CarController {
         return ResponseEntity.ok(updatedOwner);
     }
 
-    // @GetMapping("/api/owners/{ownerId}/vehicles")
-    // public ResponseEntity<List<Vehicle>> getVehicle(@PathVariable String ownerId) {
-    //     Owner owner = ownerService.findById(ownerId);
-    //     return ResponseEntity.ok(owner.getVehicle());
-    // }
-
-    // @PostMapping("/api/owners/{ownerId}/vehicles")
-    // public ResponseEntity<?> createVehicle(@PathVariable String ownerId, @RequestBody Vehicle vehicle) {
-    //     Owner owner = ownerService.findById(ownerId);
-    //     owner.getVehicle().add(vehicle);
-    //     ownerService.CreateOwner(owner);
-    //     return ResponseEntity.status(HttpStatus.CREATED).body(vehicle);
-    // }
+    @GetMapping("/api/owners/{ownerId}/vehicles")
+    public ResponseEntity<List<Vehicle>> getOwnerVehicles(@PathVariable String ownerId) {
+        Owner owner = ownerService.findById(ownerId);
+        return ResponseEntity.ok(owner.getVehicle());
+    }
 
 
     //VEHICLES
@@ -78,19 +78,38 @@ public class CarController {
         return ResponseEntity.ok(vehicles);
     }
 
+    //get vehicle by id
     @GetMapping("/api/vehicles/{vehicleId}")
     public ResponseEntity<Vehicle> getVehiclesById(@PathVariable String vehicleId) {
         Vehicle vehicle = vehicleService.GetVehicleById(vehicleId);
         return ResponseEntity.ok(vehicle);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
+    //create vehicle
     @PostMapping("/api/vehicles")
-    public ResponseEntity<Vehicle> createVehicle(@RequestBody Vehicle vehicle) {
+    public ResponseEntity<Vehicle> CreateVehicle(@RequestBody Vehicle vehicle) {
         Vehicle createdVehicle = vehicleService.CreateVehicle(vehicle);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdVehicle);
     }
 
+    //assign vehicle to an owner once vehicle exists
+    @PutMapping("/api/vehicles/{vehicleId}/assign-owner/{ownerId}")
+    public ResponseEntity<?> assignVehicleToOwner(@PathVariable String vehicleId, @PathVariable String ownerId) {
+        //get the vehicle id
+        Vehicle vehicle = vehicleService.GetVehicleById(vehicleId);
+        if (vehicle == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vehicle not found");
+        }
+        Owner owner = ownerService.findById(ownerId);
+        if (owner == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Owner not found");
+        }
+        vehicle.setOwner(owner);
+        //vehicleService.CreateVehicle(vehicle);
+        return ResponseEntity.ok(vehicle);
+    }
+
+    //delete vehicle
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/api/vehicles/{vehicleId}")
     public void deleteVehicle(@PathVariable String vehicleId) {
@@ -105,3 +124,5 @@ public class CarController {
 
 
 }
+
+

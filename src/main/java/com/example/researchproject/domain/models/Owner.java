@@ -1,5 +1,8 @@
 package com.example.researchproject.domain.models;
 
+import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.*;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -29,15 +32,18 @@ public class Owner {
     //private List<Ride> ride;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference // prevent json elements for looping infinitely
     private List<Vehicle> vehicle;
 
 
-    public Owner(String ownerId, String firstName, String lastName, String email, String phoneNumber){
+    public Owner(String ownerId, String firstName, String lastName, String email, String phoneNumber, List<Vehicle> vehicle) {
         this.ownerId = ownerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
+
+        this.vehicle = vehicle;
     }
 
     public String getOwnerId() {
@@ -80,6 +86,13 @@ public class Owner {
         this.phoneNumber = phoneNumber;
     }
 
+    public List<Vehicle> getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(List<Vehicle> vehicle) {
+        this.vehicle = vehicle;
+    }
 
     protected Owner(){
 
@@ -96,6 +109,7 @@ public class Owner {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 '}';
     }
+
 
 
 }

@@ -1,4 +1,4 @@
-package com.example.researchproject.application.ports.out.repositories;
+package com.example.researchproject.application.ports.out;
 
 import com.example.researchproject.domain.models.Vehicle;
 import org.springframework.data.jpa.repository.JpaRepository;
