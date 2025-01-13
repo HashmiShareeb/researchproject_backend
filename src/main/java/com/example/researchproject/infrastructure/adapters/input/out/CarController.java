@@ -2,6 +2,7 @@ package com.example.researchproject.infrastructure.adapters.input.out;
 
 import com.example.researchproject.application.services.OwnerService;
 import com.example.researchproject.application.services.VehicleService;
+import com.example.researchproject.domain.exceptions.VehicleNotFoundException;
 import com.example.researchproject.domain.models.Owner;
 import com.example.researchproject.domain.models.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class CarController {
 
     @Autowired
     VehicleService vehicleService;
+
+
 
     //OWNERS
 
@@ -82,32 +85,71 @@ public class CarController {
     @GetMapping("/api/vehicles/{vehicleId}")
     public ResponseEntity<Vehicle> getVehiclesById(@PathVariable String vehicleId) {
         Vehicle vehicle = vehicleService.GetVehicleById(vehicleId);
+        if (vehicle == null) {
+          throw new VehicleNotFoundException("Vehicle with id " + vehicleId + " not found or does not exist");
+        }
         return ResponseEntity.ok(vehicle);
     }
 
     //create vehicle
     @PostMapping("/api/vehicles")
     public ResponseEntity<Vehicle> CreateVehicle(@RequestBody Vehicle vehicle) {
+
         Vehicle createdVehicle = vehicleService.CreateVehicle(vehicle);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdVehicle);
     }
 
+    //update current vehicle
+    @PutMapping("/api/vehicles/{vehicleId}")
+    public ResponseEntity<Vehicle> updateVehicle(
+            @PathVariable String vehicleId,
+            @RequestBody Vehicle updatedVehicle) {
+        // Fetch the existing vehicle
+        Vehicle existingVehicle = vehicleService.GetVehicleById(vehicleId);
+        if (existingVehicle == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        // Update details
+        updatedVehicle.setVehicleId(vehicleId); // Ensure the ID remains the same
+        Vehicle savedVehicle = vehicleService.UpdateVehicle(updatedVehicle);
+
+        return ResponseEntity.ok(savedVehicle);
+    }
+
+
     //assign vehicle to an owner once vehicle exists
-    @PutMapping("/api/vehicles/{vehicleId}/assign-owner/{ownerId}")
-    public ResponseEntity<?> assignVehicleToOwner(@PathVariable String vehicleId, @PathVariable String ownerId) {
-        //get the vehicle id
+    @PutMapping("/api/vehicles/{vehicleId}/assign-owner")
+    public ResponseEntity<?> assignVehicleToOwner(
+            @PathVariable String vehicleId,
+            @RequestParam String ownerId) {
+
+        // Fetch the vehicle by ID
         Vehicle vehicle = vehicleService.GetVehicleById(vehicleId);
         if (vehicle == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Vehicle not found");
+            throw new VehicleNotFoundException("Vehicle with id " + vehicleId + " not found or does not exist");
         }
+
+        // Fetch the owner by ID
         Owner owner = ownerService.findById(ownerId);
         if (owner == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Owner not found");
         }
+
+        // Check if the vehicle is already assigned to an owner
+        if (vehicle.getOwner() != null) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Vehicle already assigned to another owner");
+        }
+
+        // Assign the owner to the vehicle
         vehicle.setOwner(owner);
-        //vehicleService.CreateVehicle(vehicle);
-        return ResponseEntity.ok(vehicle);
+
+        // Persist the changes
+        vehicleService.UpdateVehicle(vehicle);
+
+        return ResponseEntity.ok("Vehicle successfully assigned to owner");
     }
+
 
     //delete vehicle
     @ResponseStatus(HttpStatus.NO_CONTENT)

@@ -1,6 +1,6 @@
-package com.example.researchproject.application.ports.services;
+package com.example.researchproject.application.services;
 
-import com.example.researchproject.application.ports.out.repositories.OwnerRepository;
+import com.example.researchproject.application.ports.out.OwnerRepository;
 import com.example.researchproject.domain.models.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 public class OwnerService {
 
     @Autowired
-    OwnerRepository ownerRepo;
+    private OwnerRepository ownerRepo;
 
     public List<Owner> getOwners() {
         return ownerRepo.findAll(); // Ensure this is returning data
@@ -35,9 +35,14 @@ public class OwnerService {
         ownerRepo.deleteById(ownerId);
     }
 
+    public Owner findById(String ownerId) {
+        return ownerRepo.findById(ownerId)
+                .orElseThrow(() -> new IllegalArgumentException("Owner not found with ID: " + ownerId));
+    }
 
-    public Owner findById(String id) {
-        return ownerRepo.findById(id).orElse(null);
+    //owner getVehicle
+    public Owner GetVehicle(String ownerId) {
+        return ownerRepo.findById(ownerId).orElse(null);
     }
 
 

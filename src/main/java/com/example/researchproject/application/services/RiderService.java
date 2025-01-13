@@ -1,8 +1,8 @@
-package com.example.researchproject.application.ports.services;
+package com.example.researchproject.application.services;
 
 
 import com.example.researchproject.application.ports.in.RideUseCase;
-import com.example.researchproject.application.ports.out.repositories.RideRepository;
+import com.example.researchproject.application.ports.out.RideRepository;
 import com.example.researchproject.domain.exceptions.RideNotFoundException;
 import com.example.researchproject.domain.models.Ride;
 import org.springframework.stereotype.Service;

@@ -16,7 +16,7 @@ public class Vehicle {
     private String manufacturer;
     @Column
     private String model;
-    @Column(name = "license_plate")
+    @Column(name = "license_plate", unique = true, nullable = false)
     private String licensePlate;
     @Column
     private Integer year;
