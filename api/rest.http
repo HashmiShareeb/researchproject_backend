@@ -1,0 +1,109 @@
+POST localhost:8080/api/rides
+content-type: application/json
+
+{
+  "rideStatus" : "CANCELLED",
+  "ridePrice" : 20043,
+  "rideName" : "Waymo One",
+  "rideDescription" : "Waymo One is a self-driving technology company with a mission to make it safe and easy for people and things to move around."
+}
+
+
+###
+
+### 2. Get all rides
+GET localhost:8080/api/rides
+
+### 3. Get ride by id
+GET localhost:8080/api/rides/1
+
+###
+DELETE http://localhost:8080/api/rides/2
+
+###
+//owner
+
+GET http://localhost:8080/api/owners
+
+###
+
+//by id
+GET http://localhost:8080/api/rides/owners/{id}
+
+
+###
+
+POST http://localhost:8080/api/owners
+content-type: application/json
+
+{
+  "firstName": "Mdn",
+  "lastName": "dddd",
+  "email": "m@gmail.com",
+  "phoneNumber": "+1234567890"
+}
+
+###
+
+
+//vehicle
+
+GET http://localhost:8080/api/vehicles
+
+###
+
+GET http://localhost:8080/api/vehicles/{id}
+
+###
+
+POST http://localhost:8080/api/vehicles
+content-type: application/json
+
+{
+  "manufacturer": "Audi",
+  "model": "A8",
+  "licensePlate": "ZG-123-AB",
+  "year": 2020,
+  "batteryLevel": 100,
+  "vehicleStatus": "OUT_OF_SERVICE"
+
+}
+
+
+
+###
+
+
+PUT http://localhost:8080/api/vehicles/7/assign-owner/2
+Content-Type: application/json
+
+
+###
+
+PUT http://localhost:8080/api/vehicles/7/assign-owner/2
+content-type: application/json
+
+{
+    "manufacturer": "Tesla",
+    "model": "Model S",
+    "licensePlate": "ZG89-445",
+    "year": 2020,
+    "batteryLevel": 90,
+    "vehicleStatus": "IN_USE"
+}
+
+
+###
+
+//USER AUTH
+
+POST http://localhost:8080/api/auth/login
+content-type: application/json
+
+{
+  "username": "",
+  "password": ""
+}
+
+
+###

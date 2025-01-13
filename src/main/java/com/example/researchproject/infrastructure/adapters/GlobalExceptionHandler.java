@@ -1,4 +1,4 @@
-package com.example.researchproject.infrastructure.adapters.input;
+package com.example.researchproject.infrastructure.adapters;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

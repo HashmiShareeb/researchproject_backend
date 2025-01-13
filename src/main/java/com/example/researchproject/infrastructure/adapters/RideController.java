@@ -1,4 +1,4 @@
-package com.example.researchproject.infrastructure.adapters.input;
+package com.example.researchproject.infrastructure.adapters;
 
 import com.example.researchproject.domain.models.Ride;
 import com.example.researchproject.application.services.RiderService;

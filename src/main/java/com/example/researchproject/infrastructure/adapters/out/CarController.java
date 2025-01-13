@@ -1,4 +1,4 @@
-package com.example.researchproject.infrastructure.adapters.input.out;
+package com.example.researchproject.infrastructure.adapters.out;
 
 import com.example.researchproject.application.services.OwnerService;
 import com.example.researchproject.application.services.VehicleService;
