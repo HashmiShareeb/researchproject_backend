@@ -37,15 +37,18 @@ public class RestClientConfig {
                 .authorizeHttpRequests(auth -> auth
                         //.requestMatchers("/api/owners/**").hasAnyRole("ADMIN", "DRIVER")
                         //.requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/**").permitAll() //laat alle requests toe (voorlopig)
+                        .requestMatchers("**").permitAll() //laat alle requests toe (voorlopig)
                         .anyRequest().authenticated()
+
                 )
                 .formLogin(form -> form
                         .loginPage("/api/auth/login") // Custom login endpoint
                         .permitAll()
                 )
                 .logout(logout -> logout.logoutSuccessUrl("/api/auth/logout").permitAll())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .httpBasic(AbstractHttpConfigurer::disable) // Disable HTTP Basic Auth
+                .formLogin(AbstractHttpConfigurer::disable); // Disable form login
         return http.build();
     }
 
