@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +34,21 @@ public class UserService implements UserDetailsService {
     /*public boolean existsByUsername(String username) {
         return userRepository.existsByUserName(username);
     } */
+
+    //register user
+    public User register(String username, String password, String email, List<String> roles) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalArgumentException("Username already exists: " + username);
+        }
+
+        //pw hasher
+        String encodedPassword = new BCryptPasswordEncoder().encode(password);
+
+
+        User user = new User(username, encodedPassword, email, roles);
+        return userRepository.save(user);
+    }
+
 
 
 }
