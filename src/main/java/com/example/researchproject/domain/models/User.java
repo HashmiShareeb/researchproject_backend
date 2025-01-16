@@ -1,5 +1,6 @@
 package com.example.researchproject.domain.models;
 
+import com.example.researchproject.domain.models.enums.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,14 +27,16 @@ public class User implements UserDetails {
 
     @ElementCollection
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private List<String> roles;
+    private List<Role> roles;
+
 
     public User() {
 
     }
 
-    public User(String username, String password, String email, List<String> roles) {
+    public User(String username, String password, String email, List<Role> roles) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -74,18 +77,18 @@ public class User implements UserDetails {
     }
 
 
-    public List<String> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<String> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //user roles collectie
-        return roles.stream().map(role -> (GrantedAuthority) () -> role).toList();
+        return roles.stream().map(role -> (GrantedAuthority) () -> String.valueOf(role)).toList();
     }
 
 
