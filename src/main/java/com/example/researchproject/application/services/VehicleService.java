@@ -6,6 +6,7 @@ import com.example.researchproject.application.ports.out.VehicleRepository;
 import com.example.researchproject.domain.exceptions.VehicleNotFoundException;
 import com.example.researchproject.domain.models.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import com.example.researchproject.domain.models.Vehicle;
@@ -18,10 +19,14 @@ public class VehicleService implements VehicleUseCase {
     private final VehicleRepository vehicleRepository;
     private final OwnerRepository ownerRepository;
 
+    private final VehicleUseCase vehicleUseCase;
+
     @Autowired
-    public VehicleService(VehicleRepository vehicleRepository, OwnerRepository ownerRepo) {
+    @Lazy
+    public VehicleService(VehicleRepository vehicleRepository, OwnerRepository ownerRepo, VehicleUseCase vehicleUseCase) {
         this.vehicleRepository = vehicleRepository;
         this.ownerRepository = ownerRepo;
+        this.vehicleUseCase = vehicleUseCase;
     }
 
     @Override
@@ -60,6 +65,11 @@ public class VehicleService implements VehicleUseCase {
     @Override
     public boolean existsByLicensePlate(String licensePlate) {
         return vehicleRepository.existsByLicensePlate(licensePlate);
+    }
+
+   @Override
+    public String getVehicleImage(String vehicleId) {
+        return vehicleUseCase.getVehicleImage(vehicleId);
     }
 
 

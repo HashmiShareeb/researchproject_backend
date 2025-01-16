@@ -22,6 +22,9 @@ public class Vehicle {
     private Integer year;
     @Column(nullable = true, name = "battery_level")
     private Integer batteryLevel;
+    @Column(name = "vehicle_image", nullable = true)
+    private String vehicleImage;
+
     //foreign key to owner
     @ManyToOne //many vehicles to one owner --> child
     @JoinColumn(name = "owner_id", nullable = true) // Allow owner to be null
@@ -35,12 +38,14 @@ public class Vehicle {
     protected Vehicle() {
     }
 
-    public Vehicle(String manufacturer, String model, String licensePlate, Integer year, VehichleStatus vehicleStatus, Owner owner) {
+    public Vehicle(String manufacturer, String model, String licensePlate, Integer year, VehichleStatus vehicleStatus,  Integer batteryLevel, String vehicleImage, Owner owner) {
         this.manufacturer = manufacturer;
         this.model = model;
         this.licensePlate = licensePlate;
         this.year = year;
         this.vehicleStatus = vehicleStatus;
+        this.batteryLevel = batteryLevel;
+        this.vehicleImage = vehicleImage;
         this.owner = owner;
     }
 
@@ -111,6 +116,14 @@ public class Vehicle {
     }
 
 
+    public String getVehicleImage() {
+        return vehicleImage;
+    }
+
+    public void setVehicleImage(String vehicleImage) {
+        this.vehicleImage = vehicleImage;
+    }
+
     @Override
     public String toString() {
         return "Vehicle{" +
@@ -124,4 +137,6 @@ public class Vehicle {
                 ", owner=" + (owner != null ? owner.getOwnerId() : null) +
                 '}';
     }
+
+
 }

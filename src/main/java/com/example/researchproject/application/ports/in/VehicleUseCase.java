@@ -24,6 +24,8 @@ public interface VehicleUseCase {
     //exists by license plate
     boolean existsByLicensePlate(String licensePlate);
 
+    String getVehicleImage(String vehicleId);
+
 
 
 }
