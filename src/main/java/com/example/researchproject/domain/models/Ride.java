@@ -11,16 +11,16 @@ import java.time.LocalDateTime;
 public class Ride {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto increment
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ride_id", nullable = false)
-    private Long rideId;
+    private String rideId;
 
     @Column(name = "ride_name", nullable = false)
     private String rideName;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "ride_status", nullable = false)
-    private RideStatus rideStatus;
+    private RideStatus rideStatus = RideStatus.REQUESTED; // Default value bj alle ritjes
 
     @Column(name = "ride_price", nullable = false)
     private BigDecimal ridePrice;
@@ -31,6 +31,14 @@ public class Ride {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private Vehicle vehicle;
+
     @PrePersist // Before inserting a new record, set the creation date to the current date and time
     public void setDefaultCreatedAt() {
         // Set the creation date to the current date and time if it's not set
@@ -40,19 +48,21 @@ public class Ride {
     }
 
 
-    public Ride(String rideName, RideStatus rideStatus, BigDecimal ridePrice, String rideDescription, LocalDateTime createdAt) {
+    public Ride(String rideName, RideStatus rideStatus, BigDecimal ridePrice, String rideDescription, LocalDateTime createdAt, User user, Vehicle vehicle) {
         this.rideName = rideName;
         this.rideStatus = rideStatus;
         this.ridePrice = ridePrice;
         this.rideDescription = rideDescription;
         this.createdAt = createdAt;
+        this.user = user;
+        this.vehicle = vehicle;
     }
 
-    public Long getRideId() {
+    public String getRideId() {
         return rideId;
     }
 
-    public void setRideId(Long rideId) {
+    public void setRideId(String rideId) {
         this.rideId = rideId;
     }
 
@@ -97,7 +107,7 @@ public class Ride {
     }
 
     // Default constructor (required by Hibernate) - protected so that it's not callable from outside
-    protected Ride() {
+    public Ride() {
     }
 
     @Override
@@ -111,4 +121,28 @@ public class Ride {
                 ", createdAt='" + createdAt + '\'' +
                 '}';
     }
+
+    public User getUser() {
+        return user;
+    }
+    public String getUsername() {
+        if (user != null) {
+            return user.getUsername();
+        } else {
+            // Handle the case where user is null
+            return null;
+        }
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
 }
