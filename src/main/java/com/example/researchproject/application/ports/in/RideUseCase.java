@@ -33,4 +33,6 @@ public interface RideUseCase {
 
     //get ride history
     List<Ride> getRideHistory(String username);
+
+    //start ride
 }

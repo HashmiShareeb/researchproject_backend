@@ -26,7 +26,7 @@ public class Vehicle {
     private String vehicleImage;
 
     //foreign key to owner
-    @ManyToOne //many vehicles to one owner --> child
+    @ManyToOne(fetch = FetchType.LAZY)  // Lazy load to avoid fetching Owner by default --> //many vehicles to one owner --> child
     @JoinColumn(name = "owner_id", nullable = true) // Allow owner to be null
     @JsonBackReference // Prevent JSON infinite looping
     private Owner owner;

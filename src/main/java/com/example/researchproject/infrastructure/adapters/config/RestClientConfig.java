@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -15,6 +17,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableMethodSecurity(prePostEnabled = true)
 public class RestClientConfig {
     private final UserService userService;
     
@@ -36,8 +39,10 @@ public class RestClientConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         //.requestMatchers("/api/owners/**").hasAnyRole("ADMIN", "DRIVER")
-                        //.requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("**").permitAll() //laat alle requests toe (voorlopig)
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/rides/**").permitAll()
+                        .requestMatchers("/**").permitAll() //laat alle requests toe (voorlopig)
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
 
                 )

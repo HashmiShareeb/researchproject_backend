@@ -13,6 +13,6 @@ import java.util.Optional;
 public interface RideRepository extends JpaRepository<Ride, String> {
 
     List<Ride> findByUser(User user);
-
+    // Accepts String as ID
     Optional<Ride> findById(String rideId);  // Accepts String as ID
 }
