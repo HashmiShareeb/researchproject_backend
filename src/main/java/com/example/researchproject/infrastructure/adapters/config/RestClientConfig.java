@@ -35,27 +35,30 @@ public class RestClientConfig {
 
     //Finally, add  the expressionHandler into http.authorizeRequests():
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        //.requestMatchers("/api/owners/**").hasAnyRole("ADMIN", "DRIVER")
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/rides/**").permitAll()
-                        .requestMatchers("/**").permitAll() //laat alle requests toe (voorlopig)
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .anyRequest().authenticated()
-
+                        .requestMatchers("/api/auth/**").permitAll()  // Allow registration and login publicly
+                        .requestMatchers("/api/rides/**").permitAll() // Allow public access to rides (adjust if necessary)
+                        .requestMatchers("/**").permitAll() // Temporarily allow all requests
+                        .requestMatchers("/admin/**").hasRole("ADMIN")  // Restrict admin endpoints
+                        .anyRequest().authenticated()  // Any other request requires authentication
                 )
                 .formLogin(form -> form
                         .loginPage("/api/auth/login") // Custom login endpoint
                         .permitAll()
                 )
-                .logout(logout -> logout.logoutSuccessUrl("/api/auth/logout").permitAll())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/api/auth/logout")
+                        .permitAll()
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless authentication (JWT)
                 .httpBasic(AbstractHttpConfigurer::disable) // Disable HTTP Basic Auth
                 .formLogin(AbstractHttpConfigurer::disable); // Disable form login
         return http.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

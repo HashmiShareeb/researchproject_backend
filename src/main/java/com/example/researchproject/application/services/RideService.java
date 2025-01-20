@@ -1,0 +1,93 @@
+package com.example.researchproject.application.services;
+
+import com.example.researchproject.application.ports.dto.RideDTO;
+import com.example.researchproject.application.ports.in.RideUseCase2;
+import com.example.researchproject.application.ports.out.Ride2Repository;
+import com.example.researchproject.application.ports.out.UserRepository;
+import com.example.researchproject.domain.exceptions.RideNotFoundException;
+import com.example.researchproject.domain.models.Ride2;
+import com.example.researchproject.domain.models.User;
+import com.example.researchproject.domain.models.enums.RideStatus;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Service
+public class RideService implements RideUseCase2 {
+
+    private final Ride2Repository rideRepo;
+    private final UserRepository userRepo;
+
+    public RideService(Ride2Repository rideRepo, UserRepository userRepo) {
+        this.rideRepo = rideRepo;
+        this.userRepo = userRepo;
+    }
+
+    @Override
+    public Ride2 CreateRide(Ride2 ride) {
+
+        return rideRepo.save(ride);
+    }
+
+    @Override
+    public Ride2 GetRideById(String rideId) {
+        return rideRepo.findById(rideId).orElseThrow(() -> new RideNotFoundException("Ride with ID " + rideId + " not found."));
+    }
+
+    @Override
+    public List<Ride2> GetRides() {
+        return rideRepo.findAll();
+    }
+
+    @Override
+    public void DeleteRide(String rideId) {
+        rideRepo.deleteById(rideId);
+    }
+
+    @Override
+    public Ride2 UpdateRide(Ride2 ride) {
+        if (!rideRepo.existsById(ride.getRideId())) {
+            throw new RideNotFoundException("Ride with ID " + ride.getRideId() + " not found.");
+        }
+        return rideRepo.save(ride);
+    }
+
+
+    @Override
+    public Ride2 RequestRide(RideDTO rideDTO) {
+        // Ensure user exists
+        User user = userRepo.findById(rideDTO.getUserId())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + rideDTO.getUserId()));
+
+        // Create a new Ride object using DTO data
+        Ride2 ride = new Ride2();
+        ride.setRideStatus(RideStatus.REQUESTED);
+        ride.setRideId(rideDTO.getRideId());
+        ride.setRideName(rideDTO.getRideName());
+        ride.setRidePrice(rideDTO.getRidePrice());
+        ride.setRideDescription(rideDTO.getRideDescription());
+        ride.setCreatedAt(LocalDateTime.now());
+        ride.setUser(user);
+
+
+        // Save to database
+        return rideRepo.save(ride);
+    }
+
+    @Override
+    public Ride2 StartRide(String rideId) {
+        Ride2 ride = rideRepo.findById(rideId)
+                .orElseThrow(() -> new RideNotFoundException("Ride with ID " + rideId + " not found."));
+
+        if (ride.getRideStatus() != RideStatus.REQUESTED) {
+            throw new IllegalStateException("Ride must be in REQUESTED state to start.");
+        }
+
+        ride.setRideStatus(RideStatus.IN_PROGRESS);
+
+
+        return rideRepo.save(ride);
+    }
+}

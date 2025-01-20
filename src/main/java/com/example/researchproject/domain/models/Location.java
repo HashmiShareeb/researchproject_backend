@@ -4,27 +4,20 @@ import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class Location {
-    protected Location() {
-    }
 
     private Location(double latitude, double longitude, String address) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
     }
-    private Long locationId;
+
     private double latitude;
     private double longitude;
     private String address;
 
-
-    public Long getLocationId() {
-        return locationId;
+    protected Location() {
     }
 
-    public void setLocationId(Long locationId) {
-        this.locationId = locationId;
-    }
 
     public double getLatitude() {
         return latitude;
@@ -46,4 +39,13 @@ public class Location {
     public void setAddress(String address) {
         this.address = address;
     }
+    @Override
+    public String toString() {
+        return "Location{" +
+                "latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", address='" + address + '\'' +
+                '}';
+    }
+
 }
