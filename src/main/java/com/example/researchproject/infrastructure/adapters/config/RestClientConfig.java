@@ -41,7 +41,7 @@ public class RestClientConfig {
                         .requestMatchers("/api/auth/**").permitAll()  // Allow registration and login publicly
                         .requestMatchers("/api/rides/**").permitAll() // Allow public access to rides (adjust if necessary)
                         .requestMatchers("/**").permitAll() // Temporarily allow all requests
-                        .requestMatchers("/admin/**").hasRole("ADMIN")  // Restrict admin endpoints
+                        .requestMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")  // Restrict admin endpoints
                         .anyRequest().authenticated()  // Any other request requires authentication
                 )
                 .formLogin(form -> form
@@ -53,7 +53,7 @@ public class RestClientConfig {
                         .permitAll()
                 )
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless authentication (JWT)
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)) // since we are using JWT, we don't need to keep sessions
                 .httpBasic(AbstractHttpConfigurer::disable) // Disable HTTP Basic Auth
                 .formLogin(AbstractHttpConfigurer::disable); // Disable form login
         return http.build();

@@ -55,15 +55,23 @@ public class RideControllerNew {
 
     }*/
 
-    @PutMapping("/{rideId}/start")
-    public ResponseEntity<Ride2> startRide(@PathVariable String rideId) {
-        Ride2 startedRide = rideService.StartRide(rideId);
-        return ResponseEntity.ok(startedRide);
+    @PutMapping("/start/{rideId}")
+    public ResponseEntity<RideDTO> startRide(@PathVariable String rideId) {
+        Ride2 ride = rideService.StartRide(rideId);
+        return ResponseEntity.ok(new RideDTO(ride));
+
     }
 
     @PostMapping("/request")
     public ResponseEntity<Ride2> requestRide(@RequestBody RideDTO rideDTO) {
         Ride2 ride = rideService.RequestRide(rideDTO);
+
+
+        if (ride.getRideStatus() == RideStatus.REQUESTED || ride.getRideStatus() == RideStatus.IN_PROGRESS) {
+            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ride already requested or in progress");
+        }
+
+
         return ResponseEntity.ok(ride);
 
     }

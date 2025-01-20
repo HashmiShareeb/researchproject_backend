@@ -1,6 +1,6 @@
 package com.example.researchproject.application.ports.dto;
 
-import com.example.researchproject.domain.models.Ride;
+import com.example.researchproject.domain.models.Ride2;
 import com.example.researchproject.domain.models.enums.RideStatus;
 
 import java.math.BigDecimal;
@@ -15,7 +15,7 @@ public class RideDTO {
 
     public RideDTO() {}
     
-    public RideDTO(Ride ride) {
+    public RideDTO(Ride2 ride) {
         this.rideId = ride.getRideId();
         this.rideName = ride.getRideName();
         this.ridePrice = ride.getRidePrice();

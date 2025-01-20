@@ -4,6 +4,7 @@ import com.example.researchproject.application.ports.dto.RideDTO;
 import com.example.researchproject.application.ports.in.RideUseCase2;
 import com.example.researchproject.application.ports.out.Ride2Repository;
 import com.example.researchproject.application.ports.out.UserRepository;
+import com.example.researchproject.domain.exceptions.RideAlreadyStartedException;
 import com.example.researchproject.domain.exceptions.RideNotFoundException;
 import com.example.researchproject.domain.models.Ride2;
 import com.example.researchproject.domain.models.User;
@@ -81,10 +82,14 @@ public class RideService implements RideUseCase2 {
         Ride2 ride = rideRepo.findById(rideId)
                 .orElseThrow(() -> new RideNotFoundException("Ride with ID " + rideId + " not found."));
 
-        if (ride.getRideStatus() != RideStatus.REQUESTED) {
-            throw new IllegalStateException("Ride must be in REQUESTED state to start.");
+        // Check if the ride can be started
+        if (ride.getRideStatus() == RideStatus.IN_PROGRESS) {
+            throw new RideAlreadyStartedException("Ride is already in progress.");
+        } else if (ride.getRideStatus() == RideStatus.COMPLETED) {
+            throw new IllegalStateException("Ride has already been completed.");
         }
 
+        //json response niet nodig want hier is het all aangpast
         ride.setRideStatus(RideStatus.IN_PROGRESS);
 
 
