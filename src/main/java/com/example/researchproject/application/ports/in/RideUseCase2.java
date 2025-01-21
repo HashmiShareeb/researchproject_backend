@@ -22,7 +22,7 @@ public interface RideUseCase2 {
     Ride2 UpdateRide(Ride2 ride);
 
     //request ride
-    Ride2 RequestRide(RideDTO rideDTO);
+    Ride2 RequestRide(RideDTO rideDTO, String userId);
 
     //start ride
     Ride2 StartRide(String rideId);

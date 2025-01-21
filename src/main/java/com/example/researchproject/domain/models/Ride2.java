@@ -2,6 +2,7 @@ package com.example.researchproject.domain.models;
 
 import com.example.researchproject.domain.models.enums.RideStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -37,7 +38,8 @@ public class Ride2 {
 
     @ManyToOne // Many rides can belong to one user
     @JoinColumn(name = "user_id", nullable = false) // Foreign key column in rides table
-    @JsonBackReference
+    //@JsonBackReference
+    @JsonIgnoreProperties({"rides"})
     private User user;
 
     public Ride2() {

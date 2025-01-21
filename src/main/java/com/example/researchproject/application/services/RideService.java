@@ -57,20 +57,22 @@ public class RideService implements RideUseCase2 {
 
 
     @Override
-    public Ride2 RequestRide(RideDTO rideDTO) {
+    public Ride2 RequestRide(RideDTO rideDTO, String userId) {
         // Ensure user exists
-        User user = userRepo.findById(rideDTO.getUserId())
+        User user = userRepo.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + rideDTO.getUserId()));
 
         // Create a new Ride object using DTO data
         Ride2 ride = new Ride2();
         ride.setRideStatus(RideStatus.REQUESTED);
+        ride.setUser(user);
         ride.setRideId(rideDTO.getRideId());
         ride.setRideName(rideDTO.getRideName());
         ride.setRidePrice(rideDTO.getRidePrice());
         ride.setRideDescription(rideDTO.getRideDescription());
         ride.setCreatedAt(LocalDateTime.now());
-        ride.setUser(user);
+        ride.setLocation(rideDTO.getLocation());
+
 
 
         // Save to database

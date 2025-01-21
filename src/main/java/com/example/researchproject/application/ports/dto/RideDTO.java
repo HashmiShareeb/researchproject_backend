@@ -1,17 +1,20 @@
 package com.example.researchproject.application.ports.dto;
 
+import com.example.researchproject.domain.models.Location;
 import com.example.researchproject.domain.models.Ride2;
 import com.example.researchproject.domain.models.enums.RideStatus;
 
 import java.math.BigDecimal;
-
+//set how response should look like
 public class RideDTO {
     private String rideId;
-    private String userId;
     private String rideName;
+    private String userId;
+    private String userName;  // New field for the user's name
     private String rideDescription;
     private BigDecimal ridePrice;
     private RideStatus rideStatus;
+    private Location location;
 
     public RideDTO() {}
     
@@ -22,6 +25,9 @@ public class RideDTO {
         this.rideDescription = ride.getRideDescription();
         this.userId = ride.getUser().getUserId();
         this.rideStatus = RideStatus.REQUESTED; // Default waarde
+        this.location = ride.getLocation();
+        this.userName = ride.getUser().getUsername();
+
     }
 
     public String getRideId() {
@@ -70,5 +76,21 @@ public class RideDTO {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

@@ -1,21 +1,17 @@
-package com.example.researchproject.infrastructure.adapters;
+package com.example.researchproject.infrastructure.adapters.input;
 
 import com.example.researchproject.application.ports.dto.RideDTO;
 import com.example.researchproject.application.services.RideService;
-import com.example.researchproject.application.services.RiderService;
 import com.example.researchproject.application.services.UserService;
-import com.example.researchproject.domain.models.Ride;
 import com.example.researchproject.domain.models.Ride2;
-import com.example.researchproject.domain.models.User;
 import com.example.researchproject.domain.models.enums.RideStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
-import java.util.Map;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/rides")
@@ -29,8 +25,11 @@ public class RideControllerNew {
 
 
     @GetMapping
-    public ResponseEntity<?> getRides() {
-        return ResponseEntity.ok(rideService.GetRides());
+    public ResponseEntity<List<RideDTO>> getRides() {
+        List<RideDTO> rideDTOs = rideService.GetRides().stream()
+                .map(RideDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(rideDTOs);
     }
 
 
@@ -62,10 +61,10 @@ public class RideControllerNew {
 
     }
 
-    @PostMapping("/request")
-    public ResponseEntity<Ride2> requestRide(@RequestBody RideDTO rideDTO) {
-        Ride2 ride = rideService.RequestRide(rideDTO);
+    @PostMapping("/request/{userId}")
+    public ResponseEntity<Ride2> requestRide( @PathVariable String userId, @RequestBody RideDTO rideDTO){
 
+        Ride2 ride = rideService.RequestRide(rideDTO, userId);
 
         if (ride.getRideStatus() == RideStatus.REQUESTED || ride.getRideStatus() == RideStatus.IN_PROGRESS) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ride already requested or in progress");
