@@ -61,10 +61,10 @@ public class RideControllerNew {
 
     }
 
-    @PostMapping("/request/{userId}")
-    public ResponseEntity<Ride2> requestRide( @PathVariable String userId, @RequestBody RideDTO rideDTO){
+    @PostMapping("/request/{userId}/{vehicleId}")
+    public ResponseEntity<Ride2> requestRide( @PathVariable String userId,@PathVariable String vehicleId, @RequestBody RideDTO rideDTO){
 
-        Ride2 ride = rideService.RequestRide(rideDTO, userId);
+        Ride2 ride = rideService.RequestRide(rideDTO, userId, vehicleId);
 
         if (ride.getRideStatus() == RideStatus.REQUESTED || ride.getRideStatus() == RideStatus.IN_PROGRESS) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ride already requested or in progress");

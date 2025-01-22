@@ -77,8 +77,14 @@ public class UserService implements UserDetailsService {
 
         User savedUser = userRepository.save(user);
 
+
         // Map the saved user entity to UserDTO
-        return new UserDTO(savedUser.getUserId(), savedUser.getUsername(), savedUser.getEmail(), savedUser.getRoles().toString());
+        return new UserDTO(
+                savedUser.getUserId(),
+                savedUser.getUsername(),
+                savedUser.getEmail(),
+                savedUser.getRoles().stream().map(Role::name).collect(Collectors.toList())
+        );
     }
 
 

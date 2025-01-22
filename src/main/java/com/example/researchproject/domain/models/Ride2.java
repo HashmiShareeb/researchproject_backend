@@ -42,10 +42,15 @@ public class Ride2 {
     @JsonIgnoreProperties({"rides"})
     private User user;
 
+    // 🚗 Vehicle entiteit
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id", nullable = false) // Foreign Key to Vehicle
+    private Vehicle vehicle;
+
     public Ride2() {
     }
 
-    public Ride2(String rideName, RideStatus rideStatus, BigDecimal ridePrice, String rideDescription, LocalDateTime createdAt, Location location, User user) {
+    public Ride2(String rideName, RideStatus rideStatus, BigDecimal ridePrice, String rideDescription, LocalDateTime createdAt, Location location, User user, Vehicle vehicle) {
         this.rideName = rideName;
         this.rideStatus = rideStatus;
         this.ridePrice = ridePrice;
@@ -53,6 +58,7 @@ public class Ride2 {
         this.createdAt = createdAt;
         this.location = location;
         this.user = user;
+        this.vehicle = vehicle;
     }
 
     public String getRideId() {
@@ -119,6 +125,14 @@ public class Ride2 {
         this.user = user;
     }
 
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
     @Override
     public String toString() {
         return "Ride2{" +
@@ -130,6 +144,7 @@ public class Ride2 {
                 ", createdAt=" + createdAt +
                 ", location=" + location +
                 ", user=" + user +
+                ", vehicle=" + vehicle +
                 '}';
     }
 

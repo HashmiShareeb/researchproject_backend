@@ -36,13 +36,8 @@ public class VehicleService implements VehicleUseCase {
 
     @Override
     public Vehicle CreateVehicle(Vehicle vehicle) {
-        // Check if the vehicle has an owner. If it doesn't, no issue, just save it without the owner.
-        if (vehicle.getOwner() != null && vehicle.getOwner().getOwnerId() != null) {
-            // Validate the owner if necessary
-            Owner owner = ownerRepository.findById(vehicle.getOwner().getOwnerId())
-                    .orElseThrow(() -> new VehicleNotFoundException("Vehicle with id " + vehicle.getOwner().getOwnerId() + " not found or does not exist"));
-            vehicle.setOwner(owner); // Assign the owner properly
-        }
+
+
 
         return vehicleRepository.save(vehicle); // Save the vehicle (with or without an owner)
     }

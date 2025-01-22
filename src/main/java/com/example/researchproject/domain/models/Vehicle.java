@@ -26,10 +26,10 @@ public class Vehicle {
     private String vehicleImage;
 
     //foreign key to owner
-    @ManyToOne(fetch = FetchType.LAZY)  // Lazy load to avoid fetching Owner by default --> //many vehicles to one owner --> child
-    @JoinColumn(name = "owner_id", nullable = true) // Allow owner to be null
-    @JsonBackReference // Prevent JSON infinite looping
-    private Owner owner;
+    //@ManyToOne(fetch = FetchType.LAZY)  // Lazy load to avoid fetching Owner by default --> //many vehicles to one owner --> child
+    //@JoinColumn(name = "owner_id", nullable = true) // Allow owner to be null
+    //@JsonBackReference // Prevent JSON infinite looping
+    //private Owner owner;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "vehicle_status", nullable = false)
@@ -38,7 +38,7 @@ public class Vehicle {
     protected Vehicle() {
     }
 
-    public Vehicle(String manufacturer, String model, String licensePlate, Integer year, VehichleStatus vehicleStatus,  Integer batteryLevel, String vehicleImage, Owner owner) {
+    public Vehicle(String manufacturer, String model, String licensePlate, Integer year, VehichleStatus vehicleStatus,  Integer batteryLevel, String vehicleImage) {
         this.manufacturer = manufacturer;
         this.model = model;
         this.licensePlate = licensePlate;
@@ -46,7 +46,6 @@ public class Vehicle {
         this.vehicleStatus = vehicleStatus;
         this.batteryLevel = batteryLevel;
         this.vehicleImage = vehicleImage;
-        this.owner = owner;
     }
 
     public String getVehicleId() {
@@ -98,15 +97,6 @@ public class Vehicle {
         this.vehicleStatus = vehicleStatus;
     }
 
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
-
     public Integer getBatteryLevel() {
         return batteryLevel;
     }
@@ -134,7 +124,7 @@ public class Vehicle {
                 ", year=" + year +
                 ", batteryLevel=" + batteryLevel +
                 ", vehicleStatus=" + vehicleStatus +
-                ", owner=" + (owner != null ? owner.getOwnerId() : null) +
+                ", vehicleImage='" + vehicleImage + '\'' +
                 '}';
     }
 

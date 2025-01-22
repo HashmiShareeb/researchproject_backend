@@ -31,19 +31,19 @@ public class Owner {
     //@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true) //one-to-many: owner is parent
     //private List<Ride> ride;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference // prevent json elements for looping infinitely
-    private List<Vehicle> vehicle;
+    //@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    //@JsonManagedReference // prevent json elements for looping infinitely
+    //private List<Vehicle> vehicle;
 
 
-    public Owner(String ownerId, String firstName, String lastName, String email, String phoneNumber, List<Vehicle> vehicle) {
+    public Owner(String ownerId, String firstName, String lastName, String email, String phoneNumber) {
         this.ownerId = ownerId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
 
-        this.vehicle = vehicle;
+        //this.vehicle = vehicle;
     }
 
     public String getOwnerId() {
@@ -86,13 +86,6 @@ public class Owner {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<Vehicle> getVehicle() {
-        return vehicle;
-    }
-
-    public void setVehicle(List<Vehicle> vehicle) {
-        this.vehicle = vehicle;
-    }
 
     protected Owner(){
 

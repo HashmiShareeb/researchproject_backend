@@ -3,18 +3,21 @@ package com.example.researchproject.application.ports.dto;
 import com.example.researchproject.domain.models.Location;
 import com.example.researchproject.domain.models.Ride2;
 import com.example.researchproject.domain.models.enums.RideStatus;
+import com.example.researchproject.domain.models.enums.Role;
 
 import java.math.BigDecimal;
+import java.util.stream.Collectors;
+
 //set how response should look like
 public class RideDTO {
     private String rideId;
     private String rideName;
-    private String userId;
-    private String userName;  // New field for the user's name
     private String rideDescription;
     private BigDecimal ridePrice;
     private RideStatus rideStatus;
     private Location location;
+    private UserDTO user;
+    private VehicleDTO vehicle;
 
     public RideDTO() {}
     
@@ -23,10 +26,20 @@ public class RideDTO {
         this.rideName = ride.getRideName();
         this.ridePrice = ride.getRidePrice();
         this.rideDescription = ride.getRideDescription();
-        this.userId = ride.getUser().getUserId();
+        //this.userId = ride.getUser().getUserId();
         this.rideStatus = RideStatus.REQUESTED; // Default waarde
         this.location = ride.getLocation();
-        this.userName = ride.getUser().getUsername();
+        //this.userName = ride.getUser().getUsername();
+        this.user = new UserDTO(
+                ride.getUser().getUserId(),
+                ride.getUser().getUsername(),
+                ride.getUser().getEmail(),
+                ride.getUser().getRoles().stream().map(Role::name).collect(Collectors.toList())
+        );
+        this.vehicle = new VehicleDTO(ride.getVehicle()); // Convert Vehicle entity to DTO;
+
+
+
 
     }
 
@@ -70,13 +83,6 @@ public class RideDTO {
         this.rideDescription = rideDescription;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public Location getLocation() {
         return location;
@@ -86,11 +92,13 @@ public class RideDTO {
         this.location = location;
     }
 
-    public String getUserName() {
-        return userName;
+
+
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 }
