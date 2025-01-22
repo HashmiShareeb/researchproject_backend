@@ -26,10 +26,8 @@ public class RideControllerNew {
 
     @GetMapping
     public ResponseEntity<List<RideDTO>> getRides() {
-        List<RideDTO> rideDTOs = rideService.GetRides().stream()
-                .map(RideDTO::new)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(rideDTOs);
+        List<RideDTO> rides = rideService.GetRides();
+        return ResponseEntity.ok(rides);
     }
 
 

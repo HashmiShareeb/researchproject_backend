@@ -1,5 +1,6 @@
 package com.example.researchproject.application.services;
 
+import com.example.researchproject.application.ports.dto.VehicleDTO;
 import com.example.researchproject.application.ports.in.VehicleUseCase;
 import com.example.researchproject.application.ports.out.OwnerRepository;
 import com.example.researchproject.application.ports.out.VehicleRepository;
@@ -17,15 +18,12 @@ import java.util.List;
 public class VehicleService implements VehicleUseCase {
 
     private final VehicleRepository vehicleRepository;
-    private final OwnerRepository ownerRepository;
-
     private final VehicleUseCase vehicleUseCase;
 
     @Autowired
     @Lazy
-    public VehicleService(VehicleRepository vehicleRepository, OwnerRepository ownerRepo, VehicleUseCase vehicleUseCase) {
+    public VehicleService(VehicleRepository vehicleRepository, VehicleUseCase vehicleUseCase) {
         this.vehicleRepository = vehicleRepository;
-        this.ownerRepository = ownerRepo;
         this.vehicleUseCase = vehicleUseCase;
     }
 
@@ -37,9 +35,7 @@ public class VehicleService implements VehicleUseCase {
     @Override
     public Vehicle CreateVehicle(Vehicle vehicle) {
 
-
-
-        return vehicleRepository.save(vehicle); // Save the vehicle (with or without an owner)
+        return vehicleRepository.save(vehicle);
     }
 
 
@@ -66,6 +62,8 @@ public class VehicleService implements VehicleUseCase {
     public String getVehicleImage(String vehicleId) {
         return vehicleUseCase.getVehicleImage(vehicleId);
     }
+
+
 
 
 }

@@ -1,4 +1,5 @@
 package com.example.researchproject.application.ports.in;
+import com.example.researchproject.application.ports.dto.VehicleDTO;
 import com.example.researchproject.application.ports.out.VehicleRepository;
 import com.example.researchproject.domain.models.Vehicle;
 import java.util.List;

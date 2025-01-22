@@ -13,13 +13,19 @@ public class VehicleDTO {
 
 
 
-    public VehicleDTO(Vehicle vehicle) {
-        this.vehicleId = vehicle.getVehicleId();
-        this.manufacturer = vehicle.getManufacturer();
-        this.model = vehicle.getModel();
-        this.licensePlate = vehicle.getLicensePlate();
-        this.batteryLevel = vehicle.getBatteryLevel();
-        this.vehicleStatus = vehicle.getVehicleStatus();
+    protected VehicleDTO() {
+    }
+
+
+
+
+    public VehicleDTO(String vehicleId, String manufacturer, String model, String licensePlate, Integer batteryLevel, VehichleStatus vehicleStatus) {
+        this.vehicleId = vehicleId;
+        this.manufacturer = manufacturer;
+        this.model = model;
+        this.licensePlate = licensePlate;
+        this.batteryLevel = batteryLevel;
+        this.vehicleStatus = vehicleStatus;
     }
 
     public String getVehicleId() {
@@ -68,6 +74,18 @@ public class VehicleDTO {
 
     public void setVehicleStatus(VehichleStatus vehicleStatus) {
         this.vehicleStatus = vehicleStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "VehicleDTO{" +
+                "vehicleId='" + vehicleId + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", model='" + model + '\'' +
+                ", licensePlate='" + licensePlate + '\'' +
+                ", batteryLevel=" + batteryLevel +
+                ", vehicleStatus=" + vehicleStatus +
+                '}';
     }
 }
 

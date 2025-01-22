@@ -43,8 +43,9 @@ public class RideService implements RideUseCase2 {
     }
 
     @Override
-    public List<Ride2> GetRides() {
-        return rideRepo.findAll();
+    public List<RideDTO> GetRides() {
+        return rideRepo.findAll().stream().map(RideDTO::new).toList();
+
     }
 
     @Override
@@ -109,7 +110,6 @@ public class RideService implements RideUseCase2 {
 
         //json response niet nodig want hier is het all aangpast
         ride.setRideStatus(RideStatus.IN_PROGRESS);
-
 
         return rideRepo.save(ride);
     }

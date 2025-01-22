@@ -36,14 +36,14 @@ public class Ride2 {
     @Embedded  // Embeds the Location object into the same table
     private Location location;
 
-    @ManyToOne // Many rides can belong to one user
+     @ManyToOne(fetch = FetchType.EAGER)  // Many rides can belong to one user
     @JoinColumn(name = "user_id", nullable = false) // Foreign key column in rides table
     //@JsonBackReference
     @JsonIgnoreProperties({"rides"})
     private User user;
 
     // 🚗 Vehicle entiteit
-    @ManyToOne
+     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vehicle_id", nullable = false) // Foreign Key to Vehicle
     private Vehicle vehicle;
 

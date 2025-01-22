@@ -1,5 +1,6 @@
 package com.example.researchproject.infrastructure.adapters.input;
 
+import com.example.researchproject.application.ports.dto.VehicleDTO;
 import com.example.researchproject.application.services.VehicleService;
 import com.example.researchproject.domain.exceptions.VehicleNotFoundException;
 import com.example.researchproject.domain.models.Vehicle;
@@ -16,8 +17,12 @@ import java.util.List;
 @RequestMapping("/api/vehicles")
 public class VehicleController {
 
+    private final VehicleService vehicleService;
+
     @Autowired
-    VehicleService vehicleService;
+    public VehicleController(VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Vehicle>> getVehicle() {
@@ -34,6 +39,19 @@ public class VehicleController {
         }
         return ResponseEntity.ok(vehicle);
     }
+
+    //get vehicles by status
+
+    /*@GetMapping("/status/{status}")
+    public ResponseEntity<List<VehicleDTO>> getVehiclesByStatus(@PathVariable String status) {
+        if (status == null) {
+            throw new VehicleNotFoundException("Vehicle with status " + status + " not found or does not exist");
+        }
+        List<VehicleDTO> vehicles = vehicleService.GetVehiclesByStatus(status);
+        return ResponseEntity.ok(vehicles);
+
+
+    }*/
 
     //create vehicle
     @PostMapping
@@ -59,6 +77,13 @@ public class VehicleController {
         Vehicle savedVehicle = vehicleService.UpdateVehicle(updatedVehicle);
 
         return ResponseEntity.ok(savedVehicle);
+    }
+
+    //delete vehicle
+    @DeleteMapping("/{vehicleId}")
+    public ResponseEntity<?> deleteVehicle(@PathVariable String vehicleId) {
+        vehicleService.DeleteVehicle(vehicleId);
+        return ResponseEntity.ok("Vehicle with id " + vehicleId + " deleted successfully");
     }
 
 }

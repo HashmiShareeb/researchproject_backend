@@ -13,7 +13,7 @@ public interface RideUseCase2 {
     Ride2 GetRideById(String rideId);
 
     //get all rides
-    List<Ride2> GetRides();
+    List<RideDTO> GetRides();
 
     //delete ride --> not void
     void DeleteRide(String rideId);
@@ -26,5 +26,9 @@ public interface RideUseCase2 {
 
     //start ride
     Ride2 StartRide(String rideId);
+
+    //get all rides with vehicle
+    //List<Ride2> GetRidesWithVehicle();
+
 
 }

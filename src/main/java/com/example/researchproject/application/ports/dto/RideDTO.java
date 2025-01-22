@@ -16,8 +16,8 @@ public class RideDTO {
     private BigDecimal ridePrice;
     private RideStatus rideStatus;
     private Location location;
-    private UserDTO user;
     private VehicleDTO vehicle;
+    private UserDTO user;
 
     public RideDTO() {}
     
@@ -26,18 +26,22 @@ public class RideDTO {
         this.rideName = ride.getRideName();
         this.ridePrice = ride.getRidePrice();
         this.rideDescription = ride.getRideDescription();
-        //this.userId = ride.getUser().getUserId();
         this.rideStatus = RideStatus.REQUESTED; // Default waarde
         this.location = ride.getLocation();
-        //this.userName = ride.getUser().getUsername();
         this.user = new UserDTO(
                 ride.getUser().getUserId(),
                 ride.getUser().getUsername(),
                 ride.getUser().getEmail(),
                 ride.getUser().getRoles().stream().map(Role::name).collect(Collectors.toList())
         );
-        this.vehicle = new VehicleDTO(ride.getVehicle()); // Convert Vehicle entity to DTO;
-
+        this.vehicle = new VehicleDTO(
+                ride.getVehicle().getVehicleId(),
+                ride.getVehicle().getManufacturer(),
+                ride.getVehicle().getModel(),
+                ride.getVehicle().getLicensePlate(),
+                ride.getVehicle().getBatteryLevel(),
+                ride.getVehicle().getVehicleStatus()
+        );
 
 
 
@@ -100,5 +104,13 @@ public class RideDTO {
 
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public VehicleDTO getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(VehicleDTO vehicle) {
+        this.vehicle = vehicle;
     }
 }
