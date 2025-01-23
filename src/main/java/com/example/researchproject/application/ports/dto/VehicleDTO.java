@@ -13,7 +13,7 @@ public class VehicleDTO {
 
 
 
-    protected VehicleDTO() {
+    protected VehicleDTO(Vehicle vehicle) {
     }
 
 

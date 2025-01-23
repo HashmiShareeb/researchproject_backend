@@ -7,11 +7,13 @@ import com.example.researchproject.application.ports.out.UserRepository;
 import com.example.researchproject.application.ports.out.VehicleRepository;
 import com.example.researchproject.domain.exceptions.RideAlreadyStartedException;
 import com.example.researchproject.domain.exceptions.RideNotFoundException;
+import com.example.researchproject.domain.exceptions.VehicleNotFoundException;
 import com.example.researchproject.domain.models.Ride2;
 import com.example.researchproject.domain.models.User;
 import com.example.researchproject.domain.models.Vehicle;
 import com.example.researchproject.domain.models.enums.RideStatus;
 import com.example.researchproject.domain.models.enums.VehichleStatus;
+import jakarta.annotation.Nullable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +65,7 @@ public class RideService implements RideUseCase2 {
 
 
     @Override
-    public Ride2 RequestRide(RideDTO rideDTO, String userId,String vehicleId) {
+    public Ride2 RequestRide(RideDTO rideDTO, String userId, String vehicleId) { //nulable = met of zonder vehicleId
         // Ensure user exists
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + rideDTO.getUser().getUserId()));
@@ -74,6 +76,12 @@ public class RideService implements RideUseCase2 {
         if (vehicle.getVehicleStatus() != VehichleStatus.AVAILABLE) {
             throw new IllegalStateException("Vehicle is not available");
         }
+
+        //enkel vehicle status zoekt naar AVAILABLE
+        Vehicle v = vehicleRepo.findFirstByVehicleStatus(VehichleStatus.AVAILABLE).orElseThrow(
+                () -> new VehicleNotFoundException("No available vehicles found.")
+
+        );
 
 
         // Create a new Ride object using DTO data
@@ -88,12 +96,14 @@ public class RideService implements RideUseCase2 {
         ride.setLocation(rideDTO.getLocation());
         ride.setVehicle(vehicle); // 🚗 Assign the vehicle
 
-        // Update vehicle status naar "IN_USE"
+        // Update vehicle status naar "IN_USE" wanneer de ride is aangemaakt
         vehicle.setVehicleStatus(VehichleStatus.IN_USE);
         vehicleRepo.save(vehicle);
 
         // Save to database
-        return rideRepo.save(ride);
+        ride =  rideRepo.save(ride);
+
+        return ride;
     }
 
     @Override

@@ -30,8 +30,8 @@ public class Ride2 {
     @Column(name = "ride_description", nullable = true)
     private String rideDescription;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = true)
+    private LocalDateTime createdAt = LocalDateTime.now(); // Default value
 
     @Embedded  // Embeds the Location object into the same table
     private Location location;

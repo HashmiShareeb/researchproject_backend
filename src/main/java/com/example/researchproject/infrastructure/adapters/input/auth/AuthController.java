@@ -1,4 +1,5 @@
-package com.example.researchproject.infrastructure.adapters.auth;
+package com.example.researchproject.infrastructure.adapters.input.auth;
+import com.example.researchproject.application.ports.dto.UserDTO;
 import com.example.researchproject.application.ports.out.UserRepository;
 import com.example.researchproject.application.services.UserService;
 import com.example.researchproject.domain.models.User;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
+//@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -42,6 +44,9 @@ public class AuthController {
         String password = (String) userPayload.get("password");
         String email = (String) userPayload.get("email");
 
+        //validatie
+
+
         // Ensure roles exist and are correctly parsed
         Object assignedRole = userPayload.get("roles");
         List<String> roles = new ArrayList<>();
@@ -51,10 +56,19 @@ public class AuthController {
                     .map(Object::toString) // Ensure it's a String
                     .toList();
         }
+        try {
+            // nieuwe methode met DTO
+            UserDTO createdUserDTO = userService.register(username, password, email, roles);
+            return ResponseEntity.ok(createdUserDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+        //userService.register(username, password, email, roles);
+        //return ResponseEntity.ok("Register successful");
 
 
-        userService.register(username, password, email, roles);
-        return ResponseEntity.ok("Register successful");
+
     }
 
 
