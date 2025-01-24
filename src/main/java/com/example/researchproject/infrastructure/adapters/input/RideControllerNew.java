@@ -30,6 +30,34 @@ public class RideControllerNew {
         return ResponseEntity.ok(rides);
     }
 
+    @GetMapping("/{rideId}")
+    public ResponseEntity<RideDTO> getRideById(@PathVariable String rideId) {
+        Ride2 ride = rideService.GetRideById(rideId);
+        return ResponseEntity.ok(new RideDTO(ride));
+    }
+
+
+    @GetMapping("/history/{userId}")
+    public ResponseEntity<List<RideDTO>> getRideHistory(@PathVariable String userId) {
+        List<Ride2> rides = rideService.GetRideHistory(userId);
+        List<RideDTO> rideDTOS = rides.stream().map(RideDTO::new).collect(Collectors.toList());
+
+        return ResponseEntity.ok(rideDTOS);
+    }
+
+
+    @PutMapping("/end/{rideId}")
+    public ResponseEntity<?> endRide(@PathVariable String rideId) {
+        try {
+            Ride2 ride = rideService.EndRide(rideId);
+            return ResponseEntity.ok(ride);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred:" + e.getMessage());
+        }
+    }
+
 
 
 

@@ -39,12 +39,12 @@ public class Ride2 {
      @ManyToOne(fetch = FetchType.EAGER)  // Many rides can belong to one user
     @JoinColumn(name = "user_id", nullable = false) // Foreign key column in rides table
     //@JsonBackReference
-    @JsonIgnoreProperties({"rides"})
+    //@JsonIgnoreProperties({"rides"})
     private User user;
 
     // 🚗 Vehicle entiteit
      @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "vehicle_id", nullable = false) // Foreign Key to Vehicle
+    @JoinColumn(name = "vehicle_id", nullable = true) // Foreign Key to Vehicle
     private Vehicle vehicle;
 
     public Ride2() {

@@ -14,7 +14,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "user_id", nullable = false, unique = true)
-    private String UserId;
+    private String userId;
 
     @Column
     private String username;
@@ -53,11 +53,11 @@ public class User implements UserDetails {
     }
 
     public String getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(String userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public String getEmail() {

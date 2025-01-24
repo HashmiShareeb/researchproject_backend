@@ -30,5 +30,9 @@ public interface RideUseCase2 {
     //get all rides with vehicle
     //List<Ride2> GetRidesWithVehicle();
 
+    Ride2 EndRide(String rideId);
+
+    List<Ride2> GetRideHistory(String userId);
+
 
 }

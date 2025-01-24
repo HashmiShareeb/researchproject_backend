@@ -45,6 +45,7 @@ public class RideDTO {
 
 
 
+
     }
 
     public String getRideId() {

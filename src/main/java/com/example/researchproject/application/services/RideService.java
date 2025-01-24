@@ -123,4 +123,34 @@ public class RideService implements RideUseCase2 {
 
         return rideRepo.save(ride);
     }
+
+    @Override
+    public Ride2 EndRide(String rideId) {
+        Ride2 ride = rideRepo.findById(rideId)
+                .orElseThrow(() -> new RideNotFoundException("Ride with ID " + rideId + " not found."));
+
+
+        if (ride.getRideStatus() == RideStatus.COMPLETED) {
+            throw new IllegalStateException("Ride has already been completed.");
+        }
+
+        //json response niet nodig want hier is het all aangpast!
+        ride.setRideStatus(RideStatus.COMPLETED);
+
+        //omdat de rit beëindigd is, is de vehicle terug AVAILABLE
+        Vehicle vehicle = ride.getVehicle();
+        if (vehicle != null) {
+            vehicle.setVehicleStatus(VehichleStatus.AVAILABLE);
+            vehicleRepo.save(vehicle);
+        }
+
+        return rideRepo.save(ride);
+    }
+
+    @Override
+    public List<Ride2> GetRideHistory(String userId) {
+        return rideRepo.findByUser_UserIdAndRideStatus(userId, RideStatus.COMPLETED);
+    }
+
+
 }
