@@ -81,7 +81,10 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return ResponseEntity.ok("Login successful");
+        return ResponseEntity.ok(Map.of(
+                "username", username,
+                "email", userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found")).getEmail()
+        ));
     }
 
 
