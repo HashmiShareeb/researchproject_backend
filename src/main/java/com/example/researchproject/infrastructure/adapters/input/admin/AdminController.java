@@ -59,13 +59,7 @@ public class AdminController {
 
 
 
-    @GetMapping("/test-auth")
-    public ResponseEntity<?> testAuth(Authentication authentication) {
-        if (authentication == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Not authenticated");
-        }
-        return ResponseEntity.ok("Logged in as: " + authentication.getName() + " with roles " + authentication.getAuthorities());
-    }
+
 
 
 }

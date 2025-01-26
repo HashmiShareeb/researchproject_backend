@@ -1,14 +1,4 @@
 //USER AUTH
-### Test Authentication
-GET http://localhost:8080/api/admin/test-auth
-Content-Type: application/json
-Cookie:
-
-{
-  "username": "",
-  "password": ""
-
-}
 
 ###
 POST http://localhost:8080/api/auth/register

@@ -1,109 +1,85 @@
-POST localhost:8080/api/rides
-content-type: application/json
+### 1. 📌 Request a Ride (with query param)
+POST http://localhost:8080/api/rides/request?username=newUser
+Content-Type: application/json
 
 {
-  "rideStatus" : "CANCELLED",
-  "ridePrice" : 20043,
-  "rideName" : "Waymo One",
-  "rideDescription" : "Waymo One is a self-driving technology company with a mission to make it safe and easy for people and things to move around."
+  "rideName": "City Center to Airport",
+  "rideStatus": "REQUESTED",
+  "rideDescription": "Late night ride to the airport",
+  "ridePrice": 25.50
 }
 
 
-###
+### 📌 Request a Ride (without query param)
+POST http://localhost:8080/api/rides/request/{user}/{vehicleId}
+Content-Type: application/json
+
+{
+  "rideName": "City Center to Airport",
+  "rideStatus": "REQUESTED",
+  "rideDescription": "Late night ride to the airport",
+  "ridePrice": 56.20,
+  "location": {
+    "latitude": 50.850346,
+    "longitude": 4.351721,
+    "address": "Belgium, Brussels"
+  }
+}
+
 
 ### 2. Get all rides
 GET localhost:8080/api/rides
 
-### 3. Get ride by id
-GET localhost:8080/api/rides/1
+### 3. Get ride by id - {rideId}
+GET localhost:8080/api/rides/{rideId}
 
-###
-DELETE http://localhost:8080/api/rides/2
+### 4. update ride status (start ride) - {rideId}
+PUT http://localhost:8080/api/rides/start/{rideId}
 
-###
-//owner
+### 5. delete ride (for some reason) - {rideId}
+DELETE http://localhost:8080/api/rides/{rideId}
 
-GET http://localhost:8080/api/owners
+### 6. END RIDE - {rideId}
+PUT http://localhost:8080/api/rides/end/{rideId}
 
-###
-
-//by id
-GET http://localhost:8080/api/rides/owners/{id}
-
-
-###
-
-POST http://localhost:8080/api/owners
-content-type: application/json
-
-{
-  "firstName": "Mdn",
-  "lastName": "dddd",
-  "email": "m@gmail.com",
-  "phoneNumber": "+1234567890"
-}
-
-###
+### 7. RIDE History/logs (when ride is completed) - {rideId}
+GET http://localhost:8080/api/rides/history/{rideId}
 
 
-//vehicle
-
+### 🚘 VEHICLES 🚘 ###
 GET http://localhost:8080/api/vehicles
 
-###
+###🚘 GET VEHICLE BY ID - {vehicleId}
+GET http://localhost:8080/api/vehicles/{vehicleId}
 
-GET http://localhost:8080/api/vehicles/{id}
-
-###
-
+### 🚘 POST VEHICLE
 POST http://localhost:8080/api/vehicles
 content-type: application/json
 
 {
-  "manufacturer": "Audi",
-  "model": "A8",
-  "licensePlate": "ZG-123-AB",
-  "year": 2020,
-  "batteryLevel": 100,
-  "vehicleStatus": "OUT_OF_SERVICE"
+  "manufacturer": "Waymo",
+  "model": "One",
+  "licensePlate": "DEF456",
+  "year": 2021,
+  "batteryLevel": 54,
+  "vehicleStatus": "AVAILABLE"
 
 }
 
 
-
-###
-
-
-PUT http://localhost:8080/api/vehicles/7/assign-owner/2
-Content-Type: application/json
-
-
-###
-
-PUT http://localhost:8080/api/vehicles/7/assign-owner/2
+### UPDATE VEHICLE
+PUT http://localhost:8080/api/vehicles/{vehicleId}
 content-type: application/json
 
 {
-    "manufacturer": "Tesla",
-    "model": "Model S",
-    "licensePlate": "ZG89-445",
-    "year": 2020,
-    "batteryLevel": 90,
-    "vehicleStatus": "IN_USE"
+  "manufacturer": "Waymo",
+  "model": "One",
+  "licensePlate": "ABC123",
+  "year": 2023,
+  "batteryLevel": 77,
+  "vehicleStatus": "AVAILABLE",
+  "vehicleImage": null
 }
-
 
 ###
 
-//USER AUTH
-
-POST http://localhost:8080/api/auth/login
-content-type: application/json
-
-{
-  "username": "",
-  "password": ""
-}
-
-
-###

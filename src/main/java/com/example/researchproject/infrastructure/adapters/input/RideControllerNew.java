@@ -20,10 +20,12 @@ public class RideControllerNew {
     @Autowired
     RideService rideService;
 
-    @Autowired
-    UserService userService;
 
 
+    @GetMapping("/")
+    public String welcomeMessage() {
+        return "Welcome to the smartweels backend";
+    }
     @GetMapping
     public ResponseEntity<List<RideDTO>> getRides() {
         List<RideDTO> rides = rideService.GetRides();
