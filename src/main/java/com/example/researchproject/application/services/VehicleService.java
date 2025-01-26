@@ -1,11 +1,7 @@
 package com.example.researchproject.application.services;
 
-import com.example.researchproject.application.ports.dto.VehicleDTO;
 import com.example.researchproject.application.ports.in.VehicleUseCase;
-import com.example.researchproject.application.ports.out.OwnerRepository;
 import com.example.researchproject.application.ports.out.VehicleRepository;
-import com.example.researchproject.domain.exceptions.VehicleNotFoundException;
-import com.example.researchproject.domain.models.Owner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;

@@ -1,0 +1,55 @@
+//USER AUTH
+### Test Authentication
+GET http://localhost:8080/api/admin/test-auth
+Content-Type: application/json
+Cookie:
+
+{
+  "username": "",
+  "password": ""
+
+}
+
+###
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "randomuser1",
+  "password": "password123",
+  "email": "randomuser1@example.com",
+  "roles": ["USER"]
+}
+
+###
+
+
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "shareebhashmi",
+  "password": "shareeb123"
+}
+
+
+###
+
+POST http://localhost:8080/api/auth/logout
+Content-Type: application/json
+
+{
+  "username": "shareebhashmi",
+  "password": "shareeb123"
+}
+
+###
+PUT http://localhost:8080/api/admin/assign-role
+Content-Type: application/json
+
+{
+  "username": "shareebhashmi",
+  "roles": ["ADMIN"]
+}
+
+###

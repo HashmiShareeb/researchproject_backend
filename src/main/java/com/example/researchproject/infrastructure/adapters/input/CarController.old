@@ -1,4 +1,4 @@
-package com.example.researchproject.infrastructure.adapters.out;
+package com.example.researchproject.infrastructure.adapters.input;
 
 import com.example.researchproject.application.services.OwnerService;
 import com.example.researchproject.application.services.VehicleService;
@@ -70,7 +70,7 @@ public class CarController {
     @GetMapping("/api/owners/{ownerId}/vehicles")
     public ResponseEntity<List<Vehicle>> getOwnerVehicles(@PathVariable String ownerId) {
         Owner owner = ownerService.findById(ownerId);
-        return ResponseEntity.ok(owner.getVehicle());
+ 
     }
 
 
@@ -136,13 +136,14 @@ public class CarController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Owner not found");
         }
 
-        // Check if the vehicle is already assigned to an owner
+        /*Check if the vehicle is already assigned to an owner
         if (vehicle.getOwner() != null) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Vehicle already assigned to another owner");
         }
+         */
 
         // Assign the owner to the vehicle
-        vehicle.setOwner(owner);
+       // vehicle.setOwner(owner);
 
         // Persist the changes
         vehicleService.UpdateVehicle(vehicle);

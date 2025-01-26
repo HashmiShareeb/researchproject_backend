@@ -38,10 +38,11 @@ public class RestClientConfig {
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()  // Allow registration and login publicly
+                        //.requestMatchers("/api/auth/**").permitAll()  // Allow registration and login publicly
+                        .requestMatchers("/api/auth/register", "/api/auth/login").permitAll()
                         .requestMatchers("/api/rides/**").permitAll() // Allow public access to rides (adjust if necessary)
                         .requestMatchers("/**").permitAll() // Temporarily allow all requests
-                        .requestMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")  // Restrict admin endpoints
+                        .requestMatchers("/admin/**").permitAll()
                         .anyRequest().authenticated()  // Any other request requires authentication
                 )
                 .formLogin(form -> form

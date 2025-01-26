@@ -1,19 +1,18 @@
 package com.example.researchproject.application.services;
 
 import com.example.researchproject.application.ports.dto.RideDTO;
-import com.example.researchproject.application.ports.in.RideUseCase2;
-import com.example.researchproject.application.ports.out.Ride2Repository;
+import com.example.researchproject.application.ports.in.RideUseCase;
+import com.example.researchproject.application.ports.out.RideRepository;
 import com.example.researchproject.application.ports.out.UserRepository;
 import com.example.researchproject.application.ports.out.VehicleRepository;
 import com.example.researchproject.domain.exceptions.RideAlreadyStartedException;
 import com.example.researchproject.domain.exceptions.RideNotFoundException;
 import com.example.researchproject.domain.exceptions.VehicleNotFoundException;
-import com.example.researchproject.domain.models.Ride2;
+import com.example.researchproject.domain.models.Ride;
 import com.example.researchproject.domain.models.User;
 import com.example.researchproject.domain.models.Vehicle;
 import com.example.researchproject.domain.models.enums.RideStatus;
 import com.example.researchproject.domain.models.enums.VehichleStatus;
-import jakarta.annotation.Nullable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -21,26 +20,26 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-public class RideService implements RideUseCase2 {
+public class RideService implements RideUseCase {
 
-    private final Ride2Repository rideRepo;
+    private final RideRepository rideRepo;
     private final UserRepository userRepo;
     private final VehicleRepository vehicleRepo;
 
-    public RideService(Ride2Repository rideRepo, UserRepository userRepo, VehicleRepository vehicleRepo) {
+    public RideService(RideRepository rideRepo, UserRepository userRepo, VehicleRepository vehicleRepo) {
         this.rideRepo = rideRepo;
         this.userRepo = userRepo;
         this.vehicleRepo = vehicleRepo;
     }
 
     @Override
-    public Ride2 CreateRide(Ride2 ride) {
+    public Ride CreateRide(Ride ride) {
 
         return rideRepo.save(ride);
     }
 
     @Override
-    public Ride2 GetRideById(String rideId) {
+    public Ride GetRideById(String rideId) {
         return rideRepo.findById(rideId).orElseThrow(() -> new RideNotFoundException("Ride with ID " + rideId + " not found."));
     }
 
@@ -56,7 +55,7 @@ public class RideService implements RideUseCase2 {
     }
 
     @Override
-    public Ride2 UpdateRide(Ride2 ride) {
+    public Ride UpdateRide(Ride ride) {
         if (!rideRepo.existsById(ride.getRideId())) {
             throw new RideNotFoundException("Ride with ID " + ride.getRideId() + " not found.");
         }
@@ -65,7 +64,7 @@ public class RideService implements RideUseCase2 {
 
 
     @Override
-    public Ride2 RequestRide(RideDTO rideDTO, String userId, String vehicleId) { //nulable = met of zonder vehicleId
+    public Ride RequestRide(RideDTO rideDTO, String userId, String vehicleId) { //nulable = met of zonder vehicleId
         // Ensure user exists
         User user = userRepo.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + rideDTO.getUser().getUserId()));
@@ -85,7 +84,7 @@ public class RideService implements RideUseCase2 {
 
 
         // Create a new Ride object using DTO data
-        Ride2 ride = new Ride2();
+        Ride ride = new Ride();
         ride.setRideStatus(RideStatus.REQUESTED);
         ride.setUser(user);
         ride.setRideId(rideDTO.getRideId());
@@ -107,8 +106,8 @@ public class RideService implements RideUseCase2 {
     }
 
     @Override
-    public Ride2 StartRide(String rideId) {
-        Ride2 ride = rideRepo.findById(rideId)
+    public Ride StartRide(String rideId) {
+        Ride ride = rideRepo.findById(rideId)
                 .orElseThrow(() -> new RideNotFoundException("Ride with ID " + rideId + " not found."));
 
         // Check if the ride can be started
@@ -125,8 +124,8 @@ public class RideService implements RideUseCase2 {
     }
 
     @Override
-    public Ride2 EndRide(String rideId) {
-        Ride2 ride = rideRepo.findById(rideId)
+    public Ride EndRide(String rideId) {
+        Ride ride = rideRepo.findById(rideId)
                 .orElseThrow(() -> new RideNotFoundException("Ride with ID " + rideId + " not found."));
 
 
@@ -148,7 +147,7 @@ public class RideService implements RideUseCase2 {
     }
 
     @Override
-    public List<Ride2> GetRideHistory(String userId) {
+    public List<Ride> GetRideHistory(String userId) {
         return rideRepo.findByUser_UserIdAndRideStatus(userId, RideStatus.COMPLETED);
     }
 

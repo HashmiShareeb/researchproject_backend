@@ -3,7 +3,7 @@ package com.example.researchproject.infrastructure.adapters.input;
 import com.example.researchproject.application.ports.dto.RideDTO;
 import com.example.researchproject.application.services.RideService;
 import com.example.researchproject.application.services.UserService;
-import com.example.researchproject.domain.models.Ride2;
+import com.example.researchproject.domain.models.Ride;
 import com.example.researchproject.domain.models.enums.RideStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,14 +32,14 @@ public class RideControllerNew {
 
     @GetMapping("/{rideId}")
     public ResponseEntity<RideDTO> getRideById(@PathVariable String rideId) {
-        Ride2 ride = rideService.GetRideById(rideId);
+        Ride ride = rideService.GetRideById(rideId);
         return ResponseEntity.ok(new RideDTO(ride));
     }
 
 
     @GetMapping("/history/{userId}")
     public ResponseEntity<List<RideDTO>> getRideHistory(@PathVariable String userId) {
-        List<Ride2> rides = rideService.GetRideHistory(userId);
+        List<Ride> rides = rideService.GetRideHistory(userId);
         List<RideDTO> rideDTOS = rides.stream().map(RideDTO::new).collect(Collectors.toList());
 
         return ResponseEntity.ok(rideDTOS);
@@ -49,7 +49,7 @@ public class RideControllerNew {
     @PutMapping("/end/{rideId}")
     public ResponseEntity<?> endRide(@PathVariable String rideId) {
         try {
-            Ride2 ride = rideService.EndRide(rideId);
+            Ride ride = rideService.EndRide(rideId);
             return ResponseEntity.ok(ride);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -82,15 +82,15 @@ public class RideControllerNew {
 
     @PutMapping("/start/{rideId}")
     public ResponseEntity<RideDTO> startRide(@PathVariable String rideId) {
-        Ride2 ride = rideService.StartRide(rideId);
+        Ride ride = rideService.StartRide(rideId);
         return ResponseEntity.ok(new RideDTO(ride));
 
     }
 
     @PostMapping("/request/{userId}/{vehicleId}")
-    public ResponseEntity<Ride2> requestRide( @PathVariable String userId,@PathVariable String vehicleId, @RequestBody RideDTO rideDTO){
+    public ResponseEntity<Ride> requestRide(@PathVariable String userId, @PathVariable String vehicleId, @RequestBody RideDTO rideDTO){
 
-        Ride2 ride = rideService.RequestRide(rideDTO, userId, vehicleId);
+        Ride ride = rideService.RequestRide(rideDTO, userId, vehicleId);
 
         if (ride.getRideStatus() == RideStatus.REQUESTED || ride.getRideStatus() == RideStatus.IN_PROGRESS) {
             ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ride already requested or in progress");

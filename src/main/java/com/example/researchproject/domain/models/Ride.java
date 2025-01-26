@@ -18,42 +18,43 @@ public class Ride {
     @Column(name = "ride_name", nullable = false)
     private String rideName;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ride_status", nullable = false)
-    private RideStatus rideStatus = RideStatus.REQUESTED; // Default value bj alle ritjes
-
     @Column(name = "ride_price", nullable = false)
     private BigDecimal ridePrice;
+
+    @Column(name = "ride_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RideStatus rideStatus;
 
     @Column(name = "ride_description", nullable = true)
     private String rideDescription;
 
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
+    @Column(name = "created_at", nullable = true)
+    private LocalDateTime createdAt = LocalDateTime.now(); // Default value
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @Embedded  // Embeds the Location object into the same table
+    private Location location;
+
+     @ManyToOne(fetch = FetchType.EAGER)  // Many rides can belong to one user
+    @JoinColumn(name = "user_id", nullable = false) // Foreign key column in rides table
+    //@JsonBackReference
+    //@JsonIgnoreProperties({"rides"})
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "vehicle_id", nullable = false)
+    // 🚗 Vehicle entiteit
+     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "vehicle_id", nullable = true) // Foreign Key to Vehicle
     private Vehicle vehicle;
 
-    @PrePersist // Before inserting a new record, set the creation date to the current date and time
-    public void setDefaultCreatedAt() {
-        // Set the creation date to the current date and time if it's not set
-        if (this.createdAt == null) {
-            this.createdAt = LocalDateTime.now();
-        }
+    public Ride() {
     }
 
-
-    public Ride(String rideName, RideStatus rideStatus, BigDecimal ridePrice, String rideDescription, LocalDateTime createdAt, User user, Vehicle vehicle) {
+    public Ride(String rideName, RideStatus rideStatus, BigDecimal ridePrice, String rideDescription, LocalDateTime createdAt, Location location, User user, Vehicle vehicle) {
         this.rideName = rideName;
         this.rideStatus = rideStatus;
         this.ridePrice = ridePrice;
         this.rideDescription = rideDescription;
         this.createdAt = createdAt;
+        this.location = location;
         this.user = user;
         this.vehicle = vehicle;
     }
@@ -74,20 +75,20 @@ public class Ride {
         this.rideName = rideName;
     }
 
-    public RideStatus getRideStatus() {
-        return rideStatus;
-    }
-
-    public void setRideStatus(RideStatus rideStatus) {
-        this.rideStatus = rideStatus;
-    }
-
     public BigDecimal getRidePrice() {
         return ridePrice;
     }
 
     public void setRidePrice(BigDecimal ridePrice) {
         this.ridePrice = ridePrice;
+    }
+
+    public RideStatus getRideStatus() {
+        return rideStatus;
+    }
+
+    public void setRideStatus(RideStatus rideStatus) {
+        this.rideStatus = rideStatus;
     }
 
     public String getRideDescription() {
@@ -106,33 +107,18 @@ public class Ride {
         this.createdAt = createdAt;
     }
 
-    // Default constructor (required by Hibernate) - protected so that it's not callable from outside
-    public Ride() {
+    public Location getLocation() {
+        return location;
     }
 
-    @Override
-    public String toString() {
-        return "Rides{" +
-                "rideId=" + rideId +
-                ", rideName='" + rideName + '\'' +
-                ", rideStatus=" + rideStatus +
-                ", ridePrice=" + ridePrice +
-                ", rideDescription='" + rideDescription + '\'' +
-                ", createdAt='" + createdAt + '\'' +
-                '}';
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public User getUser() {
         return user;
     }
-    public String getUsername() {
-        if (user != null) {
-            return user.getUsername();
-        } else {
-            // Handle the case where user is null
-            return null;
-        }
-    }
+
     public void setUser(User user) {
         this.user = user;
     }
@@ -144,5 +130,22 @@ public class Ride {
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
     }
+
+    @Override
+    public String toString() {
+        return "Ride2{" +
+                "rideId='" + rideId + '\'' +
+                ", rideName='" + rideName + '\'' +
+                ", ridePrice=" + ridePrice +
+                ", rideStatus=" + rideStatus +
+                ", rideDescription='" + rideDescription + '\'' +
+                ", createdAt=" + createdAt +
+                ", location=" + location +
+                ", user=" + user +
+                ", vehicle=" + vehicle +
+                '}';
+    }
+
+
 
 }

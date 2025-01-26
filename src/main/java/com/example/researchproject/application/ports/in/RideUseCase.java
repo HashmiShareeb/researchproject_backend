@@ -1,38 +1,38 @@
 package com.example.researchproject.application.ports.in;
 
+import com.example.researchproject.application.ports.dto.RideDTO;
 import com.example.researchproject.domain.models.Ride;
-import com.example.researchproject.domain.models.User;
-import com.example.researchproject.domain.models.enums.RideStatus;
 
 import java.util.List;
 
 public interface RideUseCase {
+
     Ride CreateRide(Ride ride);
 
-    //get rides by driver id
-    Ride getRidesByDriverId(String driverId);
+    //get ride by id
+    Ride GetRideById(String rideId);
 
-    //get rides
-    List<Ride> GetRides();
+    //get all rides
+    List<RideDTO> GetRides();
 
-    //get rides by rider id
-    Ride GetRideById(String riderId);
-
-    //delete ride
+    //delete ride --> not void
     void DeleteRide(String rideId);
+
     //update ride
     Ride UpdateRide(Ride ride);
-    //get ride details
-    Ride GetRideDetails(String rideId);
 
-    //find rides by user
-    List<Ride> findByUser(User user);
-
-    //update ride status
-    Ride updateRideStatus(String rideId, RideStatus status);
-
-    //get ride history
-    List<Ride> getRideHistory(String username);
+    //request ride
+    Ride RequestRide(RideDTO rideDTO, String userId, String vehicleId);
 
     //start ride
+    Ride StartRide(String rideId);
+
+    //get all rides with vehicle
+    //List<Ride2> GetRidesWithVehicle();
+
+    Ride EndRide(String rideId);
+
+    List<Ride> GetRideHistory(String userId);
+
+
 }

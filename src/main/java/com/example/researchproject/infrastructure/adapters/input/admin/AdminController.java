@@ -1,4 +1,4 @@
-package com.example.researchproject.infrastructure.adapters.input;
+package com.example.researchproject.infrastructure.adapters.input.admin;
 
 import com.example.researchproject.application.ports.dto.AssignRoleDTO;
 import com.example.researchproject.application.ports.out.UserRepository;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -28,33 +29,34 @@ public class AdminController {
 
     //asign roles
     @PutMapping("/assign-role")
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<?> assignRole(@RequestBody AssignRoleDTO assignRoleDTO, Authentication authentication) {
-
-        //log user and their assigned role
-        System.out.println("Authenticated user: " + authentication.getName());
-        System.out.println("User roles: " + authentication.getAuthorities());
-
+    public ResponseEntity<?> assignRole(@RequestBody AssignRoleDTO assignRoleDTO) {
         String username = assignRoleDTO.getUsername();
         List<String> roles = assignRoleDTO.getRoles();
 
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        if(roles.isEmpty()){
+        if (roles == null || roles.isEmpty()) {
             throw new RoleNotFoundException("Roles cannot be empty");
         }
 
+        // Toegestane rollen definiëren
+        List<String> allowedRoles = List.of("USER", "ADMIN", "OPERATOR");
+
         for (String role : roles) {
-            if (!List.of("USER", "ADMIN", "OPERATOR").contains(role.toUpperCase())) {
-                throw new RoleNotFoundException("Role not found: " + role);
+            if (!allowedRoles.contains(role.toUpperCase())) {
+                throw new RoleNotFoundException("Invalid role: " + role);
             }
         }
 
-        user.setRoles(roles.stream().map(Role::valueOf).toList());
+        // Zet nieuwe rollen en sla op
+        user.setRoles(new ArrayList<>(roles.stream().map(role -> Role.valueOf(role.toUpperCase())).toList()));
         userRepository.save(user);
-        return ResponseEntity.ok("Role changed");
+
+        return ResponseEntity.ok("Role assigned to user " + username);
     }
+
+
 
 
     @GetMapping("/test-auth")
