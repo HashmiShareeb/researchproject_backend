@@ -1,9 +1,9 @@
 package com.example.researchproject.application.ports.dto;
 
-import com.example.researchproject.domain.models.Location;
-import com.example.researchproject.domain.models.Ride;
-import com.example.researchproject.domain.models.enums.RideStatus;
-import com.example.researchproject.domain.models.enums.Role;
+import com.example.researchproject.domain.models.Location.Location;
+import com.example.researchproject.domain.models.Ride.Ride;
+import com.example.researchproject.domain.models.Ride.RideStatus;
+import com.example.researchproject.domain.models.User.Role;
 
 import java.math.BigDecimal;
 import java.util.stream.Collectors;

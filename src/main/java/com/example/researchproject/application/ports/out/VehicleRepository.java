@@ -1,7 +1,7 @@
 package com.example.researchproject.application.ports.out;
 
-import com.example.researchproject.domain.models.Vehicle;
-import com.example.researchproject.domain.models.enums.VehichleStatus;
+import com.example.researchproject.domain.models.Vehicle.Vehicle;
+import com.example.researchproject.domain.models.Vehicle.VehichleStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

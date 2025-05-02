@@ -1,14 +1,11 @@
-package com.example.researchproject.infrastructure.adapters.input.admin;
+package com.example.researchproject.infrastructure.adapter.web;
 
 import com.example.researchproject.application.ports.dto.AssignRoleDTO;
 import com.example.researchproject.application.ports.out.UserRepository;
 import com.example.researchproject.domain.exceptions.RoleNotFoundException;
-import com.example.researchproject.domain.models.User;
-import com.example.researchproject.domain.models.enums.Role;
-import org.springframework.http.HttpStatus;
+import com.example.researchproject.domain.models.User.User;
+import com.example.researchproject.domain.models.User.Role;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

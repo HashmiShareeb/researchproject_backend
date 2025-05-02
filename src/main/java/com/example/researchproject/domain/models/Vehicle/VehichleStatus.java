@@ -1,4 +1,4 @@
-package com.example.researchproject.domain.models.enums;
+package com.example.researchproject.domain.models.Vehicle;
 
 public enum VehichleStatus {
     AVAILABLE,

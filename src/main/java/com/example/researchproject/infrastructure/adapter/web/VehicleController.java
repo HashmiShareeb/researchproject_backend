@@ -1,9 +1,8 @@
-package com.example.researchproject.infrastructure.adapters.input;
+package com.example.researchproject.infrastructure.adapter.web;
 
-import com.example.researchproject.application.ports.dto.VehicleDTO;
 import com.example.researchproject.application.services.VehicleService;
 import com.example.researchproject.domain.exceptions.VehicleNotFoundException;
-import com.example.researchproject.domain.models.Vehicle;
+import com.example.researchproject.domain.models.Vehicle.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

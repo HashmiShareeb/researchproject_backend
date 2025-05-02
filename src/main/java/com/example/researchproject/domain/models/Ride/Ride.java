@@ -1,6 +1,8 @@
-package com.example.researchproject.domain.models;
+package com.example.researchproject.domain.models.Ride;
 
-import com.example.researchproject.domain.models.enums.RideStatus;
+import com.example.researchproject.domain.models.Location.Location;
+import com.example.researchproject.domain.models.User.User;
+import com.example.researchproject.domain.models.Vehicle.Vehicle;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;

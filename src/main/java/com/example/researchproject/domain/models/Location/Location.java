@@ -1,4 +1,4 @@
-package com.example.researchproject.domain.models;
+package com.example.researchproject.domain.models.Location;
 
 import jakarta.persistence.Embeddable;
 

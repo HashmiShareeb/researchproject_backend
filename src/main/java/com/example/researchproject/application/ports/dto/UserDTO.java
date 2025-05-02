@@ -1,7 +1,5 @@
 package com.example.researchproject.application.ports.dto;
 
-import com.example.researchproject.domain.models.enums.Role;
-
 import java.util.List;
 
 public class UserDTO {

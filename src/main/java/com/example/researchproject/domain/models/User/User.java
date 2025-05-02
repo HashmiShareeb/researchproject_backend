@@ -1,6 +1,5 @@
-package com.example.researchproject.domain.models;
+package com.example.researchproject.domain.models.User;
 
-import com.example.researchproject.domain.models.enums.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

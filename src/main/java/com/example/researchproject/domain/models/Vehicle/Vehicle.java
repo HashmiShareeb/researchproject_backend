@@ -1,7 +1,4 @@
-package com.example.researchproject.domain.models;
-import com.example.researchproject.domain.models.enums.VehichleStatus;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonInclude;
+package com.example.researchproject.domain.models.Vehicle;
 import jakarta.persistence.*;
 
 @Entity

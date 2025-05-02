@@ -1,7 +1,7 @@
 package com.example.researchproject.application.ports.in;
 
 import com.example.researchproject.application.ports.dto.RideDTO;
-import com.example.researchproject.domain.models.Ride;
+import com.example.researchproject.domain.models.Ride.Ride;
 
 import java.util.List;
 

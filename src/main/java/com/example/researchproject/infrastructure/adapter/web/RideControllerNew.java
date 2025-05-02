@@ -1,10 +1,9 @@
-package com.example.researchproject.infrastructure.adapters.input;
+package com.example.researchproject.infrastructure.adapter.web;
 
 import com.example.researchproject.application.ports.dto.RideDTO;
 import com.example.researchproject.application.services.RideService;
-import com.example.researchproject.application.services.UserService;
-import com.example.researchproject.domain.models.Ride;
-import com.example.researchproject.domain.models.enums.RideStatus;
+import com.example.researchproject.domain.models.Ride.Ride;
+import com.example.researchproject.domain.models.Ride.RideStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +18,6 @@ public class RideControllerNew {
 
     @Autowired
     RideService rideService;
-
-
 
     @GetMapping("/")
     public String welcomeMessage() {

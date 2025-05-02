@@ -8,11 +8,11 @@ import com.example.researchproject.application.ports.out.VehicleRepository;
 import com.example.researchproject.domain.exceptions.RideAlreadyStartedException;
 import com.example.researchproject.domain.exceptions.RideNotFoundException;
 import com.example.researchproject.domain.exceptions.VehicleNotFoundException;
-import com.example.researchproject.domain.models.Ride;
-import com.example.researchproject.domain.models.User;
-import com.example.researchproject.domain.models.Vehicle;
-import com.example.researchproject.domain.models.enums.RideStatus;
-import com.example.researchproject.domain.models.enums.VehichleStatus;
+import com.example.researchproject.domain.models.Ride.Ride;
+import com.example.researchproject.domain.models.User.User;
+import com.example.researchproject.domain.models.Vehicle.Vehicle;
+import com.example.researchproject.domain.models.Ride.RideStatus;
+import com.example.researchproject.domain.models.Vehicle.VehichleStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.example.researchproject.application.ports.out;
 
-import com.example.researchproject.domain.models.Ride;
-import com.example.researchproject.domain.models.enums.RideStatus;
+import com.example.researchproject.domain.models.Ride.Ride;
+import com.example.researchproject.domain.models.Ride.RideStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

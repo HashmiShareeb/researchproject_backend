@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import com.example.researchproject.domain.models.Vehicle;
+import com.example.researchproject.domain.models.Vehicle.Vehicle;
 
 import java.util.List;
 

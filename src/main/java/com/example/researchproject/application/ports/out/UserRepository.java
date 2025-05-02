@@ -1,6 +1,6 @@
 package com.example.researchproject.application.ports.out;
 
-import com.example.researchproject.domain.models.User;
+import com.example.researchproject.domain.models.User.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
