@@ -2,6 +2,7 @@ package com.example.researchproject.infrastructure.adapter.web;
 
 import com.example.researchproject.application.ports.dto.RideDTO;
 import com.example.researchproject.application.services.RideService;
+import com.example.researchproject.domain.exceptions.RideNotFoundException;
 import com.example.researchproject.domain.models.Ride.Ride;
 import com.example.researchproject.domain.models.Ride.RideStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,19 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/rides")
 public class RideController {
 
-    @Autowired
-    RideService rideService;
+
+    private final RideService rideService;
+    public RideController(RideService rideService) {
+        this.rideService = rideService;
+    }
 
     @GetMapping("/")
     public String welcomeMessage() {
         return "Welcome to the smartweels backend";
     }
+
+
+
     @GetMapping
     public ResponseEntity<List<RideDTO>> getRides() {
         List<RideDTO> rides = rideService.GetRides();
@@ -39,25 +46,30 @@ public class RideController {
     @GetMapping("/history/{userId}")
     public ResponseEntity<List<RideDTO>> getRideHistory(@PathVariable String userId) {
         List<Ride> rides = rideService.GetRideHistory(userId);
-        List<RideDTO> rideDTOS = rides.stream().map(RideDTO::new).collect(Collectors.toList());
+        List<RideDTO> rideDTOs = rides.stream().map(RideDTO::new).collect(Collectors.toList());
 
-        return ResponseEntity.ok(rideDTOS);
+        return ResponseEntity.ok(rideDTOs);
     }
 
+
+    @PutMapping("/start/{rideId}")
+    public ResponseEntity<RideDTO> startRide(@PathVariable String rideId) {
+        Ride ride = rideService.startRide(rideId);
+        return ResponseEntity.ok(new RideDTO(ride));
+
+    }
 
     @PutMapping("/end/{rideId}")
     public ResponseEntity<?> endRide(@PathVariable String rideId) {
         try {
-            Ride ride = rideService.EndRide(rideId);
+            Ride ride = rideService.endRide(rideId);
             return ResponseEntity.ok(ride);
-        } catch (IllegalArgumentException e) {
+        } catch (RideNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred:" + e.getMessage());
         }
     }
-
-
 
 
     /*@PutMapping("/start/{rideId}")
@@ -79,34 +91,26 @@ public class RideController {
 
     }*/
 
-    @PutMapping("/start/{rideId}")
-    public ResponseEntity<RideDTO> startRide(@PathVariable String rideId) {
-        Ride ride = rideService.StartRide(rideId);
-        return ResponseEntity.ok(new RideDTO(ride));
 
-    }
 
     @PostMapping("/request/{userId}/{vehicleId}")
-    public ResponseEntity<Ride> requestRide(@PathVariable String userId, @PathVariable String vehicleId, @RequestBody RideDTO rideDTO){
-
+    public ResponseEntity<?> requestRide(@PathVariable String userId, @PathVariable String vehicleId, @RequestBody RideDTO rideDTO) {
         Ride ride = rideService.RequestRide(rideDTO, userId, vehicleId);
 
+
         if (ride.getRideStatus() == RideStatus.REQUESTED || ride.getRideStatus() == RideStatus.IN_PROGRESS) {
-            ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ride already requested or in progress");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ride already requested or in progress");
         }
 
-
-        return ResponseEntity.ok(ride);
-
+        return ResponseEntity.ok(new RideDTO(ride)); // ✅ return DTO, not domain model
     }
 
 
     @DeleteMapping("/{rideId}")
     public ResponseEntity<?> deleteRide(@PathVariable String rideId) {
-        rideService.DeleteRide(rideId);
-        return ResponseEntity.ok("Ride deleted successfully.");
+        rideService.deleteRide(rideId);
+        return ResponseEntity.ok("Ride deleted successfully." + rideId);
     }
-
 
 
 }

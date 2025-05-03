@@ -126,11 +126,11 @@ public class RideDTO {
         this.routeSummary = routeSummary;
     }
 
-    public void setPickupLocation(Location pickupLocation) {
-        this.pickupLocation = pickupLocation;
+    public Location getPickupLocation() {
+        return pickupLocation;
     }
 
-    public void setDropoffLocation(Location dropoffLocation) {
-        this.dropoffLocation = dropoffLocation;
+    public Location getDropoffLocation() {
+        return dropoffLocation;
     }
 }

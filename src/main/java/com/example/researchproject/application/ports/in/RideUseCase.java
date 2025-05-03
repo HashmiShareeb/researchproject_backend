@@ -15,22 +15,19 @@ public interface RideUseCase {
     //get all rides
     List<RideDTO> GetRides();
 
-    //delete ride --> not void
-    void DeleteRide(String rideId);
+    //delete ride
+    void deleteRide(String rideId);
 
     //update ride
-    Ride UpdateRide(Ride ride);
+    Ride updateRide(Ride ride);
 
     //request ride
     Ride RequestRide(RideDTO rideDTO, String userId, String vehicleId);
 
     //start ride
-    Ride StartRide(String rideId);
+    Ride startRide(String rideId);
 
-    //get all rides with vehicle
-    //List<Ride2> GetRidesWithVehicle();
-
-    Ride EndRide(String rideId);
+    Ride endRide(String rideId);
 
     List<Ride> GetRideHistory(String userId);
 
