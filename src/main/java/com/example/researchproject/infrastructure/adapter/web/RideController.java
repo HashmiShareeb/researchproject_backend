@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/rides")
-public class RideControllerNew {
+public class RideController {
 
     @Autowired
     RideService rideService;

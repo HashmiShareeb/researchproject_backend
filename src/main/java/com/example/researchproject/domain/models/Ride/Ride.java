@@ -43,7 +43,7 @@ public class Ride {
     private User user;
 
     // 🚗 Vehicle entiteit
-     @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vehicle_id", nullable = true) // Foreign Key to Vehicle
     private Vehicle vehicle;
 

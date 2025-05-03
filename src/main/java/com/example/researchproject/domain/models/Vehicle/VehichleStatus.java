@@ -7,18 +7,13 @@ public enum VehichleStatus {
     OUT_OF_SERVICE;
 
     public String vehichleStatus(VehichleStatus vehichleStatus) {
-        switch (vehichleStatus) {
-            case AVAILABLE:
-                return "Available";
-            case IN_USE:
-                return "In Use";
-            case MANTAINANCE:
-                return "Maintenance";
-            case OUT_OF_SERVICE:
-                return "Out of Service";
-            default:
-                return "Unknown";
-        }
+        return switch (vehichleStatus) {
+            case AVAILABLE -> "Available";
+            case IN_USE -> "In Use";
+            case MANTAINANCE -> "Maintenance";
+            case OUT_OF_SERVICE -> "Out of Service";
+            default -> "Unknown";
+        };
     }
 
 }

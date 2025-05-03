@@ -1,5 +1,8 @@
 package com.example.researchproject.domain.models.Vehicle;
+import com.example.researchproject.domain.exceptions.BatteryLevelException;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "vehicle")
@@ -18,21 +21,15 @@ public class Vehicle {
     @Column
     private Integer year;
     @Column(nullable = true, name = "battery_level")
+    @Min(0) @Max(100) // Battery level 0 and 100 check
     private Integer batteryLevel;
-    @Column(name = "vehicle_image", nullable = true)
-    private String vehicleImage;
-
-    //foreign key to owner
-    //@ManyToOne(fetch = FetchType.LAZY)  // Lazy load to avoid fetching Owner by default --> //many vehicles to one owner --> child
-    //@JoinColumn(name = "owner_id", nullable = true) // Allow owner to be null
-    //@JsonBackReference // Prevent JSON infinite looping
-    //private Owner owner;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "vehicle_status", nullable = false)
     private VehichleStatus vehicleStatus;
 
     protected Vehicle() {
+
     }
 
     public Vehicle(String manufacturer, String model, String licensePlate, Integer year, VehichleStatus vehicleStatus,  Integer batteryLevel, String vehicleImage) {
@@ -42,7 +39,7 @@ public class Vehicle {
         this.year = year;
         this.vehicleStatus = vehicleStatus;
         this.batteryLevel = batteryLevel;
-        this.vehicleImage = vehicleImage;
+
     }
 
     public String getVehicleId() {
@@ -85,7 +82,6 @@ public class Vehicle {
         this.year = year;
     }
 
-
     public VehichleStatus getVehicleStatus() {
         return vehicleStatus;
     }
@@ -94,21 +90,18 @@ public class Vehicle {
         this.vehicleStatus = vehicleStatus;
     }
 
+    public void updateBatteryLevel(int newBatteryLevel) {
+        if(newBatteryLevel < 0 || newBatteryLevel > 100) {
+            throw new BatteryLevelException("Invalid battery level " + newBatteryLevel + ". Battery level must be between 0 and 100.");
+        }
+        this.batteryLevel = newBatteryLevel;
+    }
     public Integer getBatteryLevel() {
         return batteryLevel;
     }
 
     public void setBatteryLevel(Integer batteryLevel) {
         this.batteryLevel = batteryLevel;
-    }
-
-
-    public String getVehicleImage() {
-        return vehicleImage;
-    }
-
-    public void setVehicleImage(String vehicleImage) {
-        this.vehicleImage = vehicleImage;
     }
 
     @Override
@@ -121,7 +114,6 @@ public class Vehicle {
                 ", year=" + year +
                 ", batteryLevel=" + batteryLevel +
                 ", vehicleStatus=" + vehicleStatus +
-                ", vehicleImage='" + vehicleImage + '\'' +
                 '}';
     }
 
