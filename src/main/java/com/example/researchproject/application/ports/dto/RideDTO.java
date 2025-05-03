@@ -15,19 +15,26 @@ public class RideDTO {
     private String rideDescription;
     private BigDecimal ridePrice;
     private RideStatus rideStatus;
-    private Location location;
     private VehicleDTO vehicle;
     private UserDTO user;
 
+    private String routeSummary; //dynamic route naam
+    private Location pickupLocation;
+    private Location dropoffLocation;
+
     public RideDTO() {}
-    
+
     public RideDTO(Ride ride) {
         this.rideId = ride.getRideId();
         this.rideName = ride.getRideName();
         this.ridePrice = ride.getRidePrice();
         this.rideDescription = ride.getRideDescription();
         this.rideStatus = RideStatus.REQUESTED; // Default waarde
-        this.location = ride.getLocation();
+
+        this.pickupLocation = ride.getPickupLocation();
+        this.dropoffLocation = ride.getDropoffLocation();
+
+        this.routeSummary = generateRouteSummary();
         this.user = new UserDTO(
                 ride.getUser().getUserId(),
                 ride.getUser().getUsername(),
@@ -44,9 +51,15 @@ public class RideDTO {
         );
 
 
-
-
     }
+
+    private String generateRouteSummary() {
+        if (pickupLocation != null && dropoffLocation != null) {
+            return pickupLocation.getAddress() + " → " + dropoffLocation.getAddress();
+        }
+        return "Route";
+    }
+
 
     public String getRideId() {
         return rideId;
@@ -89,16 +102,6 @@ public class RideDTO {
     }
 
 
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-
-
     public UserDTO getUser() {
         return user;
     }
@@ -113,5 +116,21 @@ public class RideDTO {
 
     public void setVehicle(VehicleDTO vehicle) {
         this.vehicle = vehicle;
+    }
+
+    public String getRouteSummary() {
+        return routeSummary;
+    }
+
+    public void setRouteSummary(String routeSummary) {
+        this.routeSummary = routeSummary;
+    }
+
+    public void setPickupLocation(Location pickupLocation) {
+        this.pickupLocation = pickupLocation;
+    }
+
+    public void setDropoffLocation(Location dropoffLocation) {
+        this.dropoffLocation = dropoffLocation;
     }
 }

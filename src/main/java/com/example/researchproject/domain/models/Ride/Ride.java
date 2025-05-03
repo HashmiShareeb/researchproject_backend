@@ -30,19 +30,43 @@ public class Ride {
     @Column(name = "ride_description", nullable = true)
     private String rideDescription;
 
-    @Column(name = "created_at", nullable = true)
-    private LocalDateTime createdAt = LocalDateTime.now(); // Default value
+    @Column(name = "created_at", nullable = true, updatable = false)
+    private LocalDateTime createdAt;
 
-    @Embedded  // Embeds the Location object into the same table
-    private Location location;
+    //onCreate method to be executed before the entity is persisted
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 
-     @ManyToOne(fetch = FetchType.EAGER)  // Many rides can belong to one user
+    // 🏁 Locatie entiteit
+    //@Embedded  // Embeds the Location object into the same table
+    //private Location location;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "address", column = @Column(name = "pickup_address")),
+            @AttributeOverride(name = "city", column = @Column(name = "pickup_city")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "pickup_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "pickup_longitude"))
+    })
+    private Location pickupLocation;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "address", column = @Column(name = "dropoff_address")),
+            @AttributeOverride(name = "city", column = @Column(name = "dropoff_city")),
+            @AttributeOverride(name = "latitude", column = @Column(name = "dropoff_latitude")),
+            @AttributeOverride(name = "longitude", column = @Column(name = "dropoff_longitude"))
+    })
+    private Location dropoffLocation;
+
+
+    @ManyToOne(fetch = FetchType.EAGER)  // Many rides can belong to one user
     @JoinColumn(name = "user_id", nullable = false) // Foreign key column in rides table
-    //@JsonBackReference
-    //@JsonIgnoreProperties({"rides"})
     private User user;
 
-    // 🚗 Vehicle entiteit
+    // 🚗 Vehicle entiteit join
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "vehicle_id", nullable = true) // Foreign Key to Vehicle
     private Vehicle vehicle;
@@ -50,13 +74,15 @@ public class Ride {
     public Ride() {
     }
 
-    public Ride(String rideName, RideStatus rideStatus, BigDecimal ridePrice, String rideDescription, LocalDateTime createdAt, Location location, User user, Vehicle vehicle) {
+    public Ride(String rideName, RideStatus rideStatus, BigDecimal ridePrice, String rideDescription, LocalDateTime createdAt, User user, Vehicle vehicle, Location pickupLocation, Location dropoffLocation) {
         this.rideName = rideName;
         this.rideStatus = rideStatus;
         this.ridePrice = ridePrice;
         this.rideDescription = rideDescription;
         this.createdAt = createdAt;
-        this.location = location;
+        //this.location = location;
+        this.pickupLocation = pickupLocation;
+        this.dropoffLocation = dropoffLocation;
         this.user = user;
         this.vehicle = vehicle;
     }
@@ -109,12 +135,21 @@ public class Ride {
         this.createdAt = createdAt;
     }
 
-    public Location getLocation() {
-        return location;
+
+    public Location getPickupLocation() {
+        return pickupLocation;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setPickupLocation(Location pickupLocation) {
+        this.pickupLocation = pickupLocation;
+    }
+
+    public Location getDropoffLocation() {
+        return dropoffLocation;
+    }
+
+    public void setDropoffLocation(Location dropoffLocation) {
+        this.dropoffLocation = dropoffLocation;
     }
 
     public User getUser() {
@@ -142,7 +177,8 @@ public class Ride {
                 ", rideStatus=" + rideStatus +
                 ", rideDescription='" + rideDescription + '\'' +
                 ", createdAt=" + createdAt +
-                ", location=" + location +
+                " pickupLocation=" + pickupLocation +
+                ", dropoffLocation=" + dropoffLocation +
                 ", user=" + user +
                 ", vehicle=" + vehicle +
                 '}';
