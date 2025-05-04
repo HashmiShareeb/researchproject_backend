@@ -98,9 +98,9 @@ public class RideController {
         Ride ride = rideService.RequestRide(rideDTO, userId, vehicleId);
 
 
-        if (ride.getRideStatus() == RideStatus.REQUESTED || ride.getRideStatus() == RideStatus.IN_PROGRESS) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ride already requested or in progress");
-        }
+        // if (ride.getRideStatus() == RideStatus.REQUESTED || ride.getRideStatus() == RideStatus.IN_PROGRESS) {
+        //     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ride already requested or in progress");
+        // }
 
         return ResponseEntity.ok(new RideDTO(ride)); // ✅ return DTO, not domain model
     }
