@@ -1,5 +1,7 @@
 package com.example.researchproject.application.ports.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.List;
 
 public class UserDTO {
@@ -7,6 +9,7 @@ public class UserDTO {
     private String username;
     //private String password; geen wachtwoord tonen op json response data
     private String email;
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
     private List<String> roles;
 
     public UserDTO() {

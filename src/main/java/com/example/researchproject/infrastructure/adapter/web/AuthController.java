@@ -2,6 +2,8 @@ package com.example.researchproject.infrastructure.adapter.web;
 import com.example.researchproject.application.ports.dto.UserDTO;
 import com.example.researchproject.application.ports.out.UserRepository;
 import com.example.researchproject.application.services.UserService;
+import com.example.researchproject.domain.models.User.Role;
+import com.example.researchproject.domain.models.User.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 //@CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -66,7 +69,7 @@ public class AuthController {
 
     }
 
-
+/*
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Map<String, String> loginPayload) {
         String username = loginPayload.get("username");
@@ -80,6 +83,32 @@ public class AuthController {
                 "username", username,
                 "email", userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found")).getEmail()
         ));
+    }
+
+*/
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> loginPayload) {
+        String username = loginPayload.get("username");
+        String password = loginPayload.get("password");
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Get the full user details including roles
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // Convert to DTO with roles
+        UserDTO userDTO = new UserDTO(
+                user.getUserId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getRoles().stream().map(Role::name).collect(Collectors.toList())
+        );
+
+        return ResponseEntity.ok(userDTO);
     }
 
 

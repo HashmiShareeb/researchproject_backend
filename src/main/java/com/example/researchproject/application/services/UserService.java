@@ -93,8 +93,8 @@ public class UserService implements UserDetailsService {
         return roles.stream()
                 .map(role -> {
                     try {
-                        return Role.valueOf(role.toUpperCase());
-                    } catch (RoleNotFoundException e) {
+                        return Role.valueOf(role.trim().toUpperCase());
+                    } catch (IllegalArgumentException e) {
                         throw new RoleNotFoundException("Invalid role: " + role);
                     }
                 })
