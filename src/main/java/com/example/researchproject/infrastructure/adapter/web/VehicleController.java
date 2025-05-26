@@ -39,6 +39,17 @@ public class VehicleController {
         return ResponseEntity.ok(vehicle);
     }
 
+    //get vehicle by available status
+    @GetMapping("/available")
+    public ResponseEntity<List<Vehicle>> getAvailableVehicles() {
+        List<Vehicle> vehicles = vehicleService.GetVehicles();
+        List<Vehicle> availableVehicles = vehicles.stream()
+                .filter(vehicle -> "available".equalsIgnoreCase(vehicle.getVehicleStatus().toString()))
+                .toList();
+        return ResponseEntity.ok(availableVehicles);
+    }
+
+
     //get vehicles by status
 
     /*@GetMapping("/status/{status}")
