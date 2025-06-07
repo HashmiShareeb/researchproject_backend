@@ -31,5 +31,9 @@ public interface RideUseCase {
 
     List<Ride> GetRideHistory(String userId);
 
+    //get rides by user id
+    List<Ride> GetRidesByUserId(String userId);
+
+
 
 }

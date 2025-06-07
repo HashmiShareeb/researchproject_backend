@@ -28,6 +28,12 @@ public class RideController {
         return "Welcome to the smartweels backend";
     }
 
+    //get rides by user Id
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Ride>> getRidesByUserId(@PathVariable String userId) {
+        return ResponseEntity.ok(rideService.GetRidesByUserId(userId));
+    }
+
 
 
     @GetMapping

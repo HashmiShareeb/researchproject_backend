@@ -144,4 +144,11 @@ public class RideService implements RideUseCase {
     public List<Ride> GetRideHistory(String userId) {
         return rideRepo.findByUser_UserIdAndRideStatus(userId, RideStatus.COMPLETED);
     }
+
+    @Override
+    public List<Ride> GetRidesByUserId(String userId) {
+        return rideRepo.findByUser_UserIdAndRideStatus(userId, RideStatus.REQUESTED);
+    }
+
+
 }
