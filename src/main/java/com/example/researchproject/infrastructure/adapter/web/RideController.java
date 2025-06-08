@@ -61,9 +61,9 @@ public class RideController {
     @PutMapping("/start/{rideId}")
     public ResponseEntity<RideDTO> startRide(@PathVariable String rideId) {
         Ride ride = rideService.startRide(rideId);
-        return ResponseEntity.ok(new RideDTO(ride));
-
+        return ResponseEntity.ok(new RideDTO(ride)); // make sure this uses the updated entity
     }
+
 
     @PutMapping("/end/{rideId}")
     public ResponseEntity<?> endRide(@PathVariable String rideId) {

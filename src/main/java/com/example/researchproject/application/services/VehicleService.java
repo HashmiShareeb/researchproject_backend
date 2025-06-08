@@ -59,7 +59,4 @@ public class VehicleService implements VehicleUseCase {
         return vehicleUseCase.getVehicleImage(vehicleId);
     }
 
-
-
-
 }

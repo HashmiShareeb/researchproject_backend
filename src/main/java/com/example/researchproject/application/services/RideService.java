@@ -103,18 +103,22 @@ public class RideService implements RideUseCase {
         return rideRepo.save(ride);
     }
 
+
     @Override
     public Ride startRide(String rideId) {
         Ride ride = rideRepo.findById(rideId)
                 .orElseThrow(() -> new RideNotFoundException("Ride with ID " + rideId + " not found."));
-
         if (ride.getRideStatus() == RideStatus.IN_PROGRESS) {
             throw new RideAlreadyStartedException("Ride is already in progress.");
         } else if (ride.getRideStatus() == RideStatus.COMPLETED) {
             throw new IllegalStateException("Ride has already been completed.");
+        } else if (ride.getRideStatus() != RideStatus.REQUESTED) {
+            throw new IllegalStateException("Ride is not in a state that can be started.");
         }
 
         ride.setRideStatus(RideStatus.IN_PROGRESS);
+
+
         return rideRepo.save(ride);
     }
 
@@ -125,12 +129,13 @@ public class RideService implements RideUseCase {
 
         if (ride.getRideStatus() == RideStatus.COMPLETED) {
             throw new IllegalStateException("Ride is already completed.");
+        } else if (ride.getRideStatus() != RideStatus.IN_PROGRESS) {
+            throw new IllegalStateException("Cannot end a ride that hasn't started.");
         }
 
-        // Update ride status
         ride.setRideStatus(RideStatus.COMPLETED);
 
-        // Free up the vehicle
+        // Free vehicle
         Vehicle vehicle = ride.getVehicle();
         if (vehicle != null) {
             vehicle.setVehicleStatus(VehichleStatus.AVAILABLE);
@@ -139,6 +144,7 @@ public class RideService implements RideUseCase {
 
         return rideRepo.save(ride);
     }
+
 
     @Override
     public List<Ride> GetRideHistory(String userId) {

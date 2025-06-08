@@ -29,7 +29,8 @@ public class RideDTO {
         this.rideName = ride.getRideName();
         this.ridePrice = ride.getRidePrice();
         this.rideDescription = ride.getRideDescription();
-        this.rideStatus = RideStatus.REQUESTED; // Default waarde
+        //this.rideStatus = RideStatus.REQUESTED; // Default waarde
+        this.rideStatus = ride.getRideStatus();
 
         this.pickupLocation = ride.getPickupLocation();
         this.dropoffLocation = ride.getDropoffLocation();
