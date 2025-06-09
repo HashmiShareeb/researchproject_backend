@@ -35,7 +35,6 @@ public class RideController {
     }
 
 
-
     @GetMapping
     public ResponseEntity<List<RideDTO>> getRides() {
         List<RideDTO> rides = rideService.GetRides();
@@ -109,6 +108,13 @@ public class RideController {
         // }
 
         return ResponseEntity.ok(new RideDTO(ride)); // ✅ return DTO, not domain model
+    }
+
+
+    @PutMapping("/{rideId}/cancel")
+    public ResponseEntity<RideDTO> cancelRide(@PathVariable String rideId) {
+        Ride ride = rideService.cancelRide(rideId);
+        return ResponseEntity.ok(new RideDTO(ride));
     }
 
 

@@ -20,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+
 @Service
 public class RideService implements RideUseCase {
 
@@ -155,6 +157,33 @@ public class RideService implements RideUseCase {
     public List<Ride> GetRidesByUserId(String userId) {
         return rideRepo.findByUser_UserIdAndRideStatus(userId, RideStatus.REQUESTED);
     }
+
+
+
+    // Cancel Ride
+    @Override
+    public Ride cancelRide(String rideId) {
+        Ride ride = rideRepo.findById(rideId)
+                .orElseThrow(() -> new RideNotFoundException("Ride with ID " + rideId + " not found"));
+
+        if (ride.getRideStatus() == RideStatus.CANCELLED || ride.getRideStatus() == RideStatus.COMPLETED) {
+            throw new IllegalStateException("Cannot cancel a ride that is " + ride.getRideStatus());
+        }
+
+        ride.setRideStatus(RideStatus.CANCELLED);
+
+        // Free up vehicle if assigned and not already returned
+        Vehicle vehicle = ride.getVehicle();
+        if (vehicle != null && vehicle.getVehicleStatus() == VehichleStatus.IN_USE) {
+            vehicle.setVehicleStatus(VehichleStatus.AVAILABLE);
+            vehicleRepo.save(vehicle);
+        }
+
+        return rideRepo.save(ride);
+    }
+
+
+
 
 
 }

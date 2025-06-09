@@ -34,6 +34,7 @@ public interface RideUseCase {
     //get rides by user id
     List<Ride> GetRidesByUserId(String userId);
 
-
+    //cancel ride
+    Ride cancelRide(String rideId);
 
 }
