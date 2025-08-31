@@ -129,6 +129,8 @@ De applicatie zal ook beschikbaar zijn op `http://localhost:8080/api`.
 ---
 
 ## Database Setup
+De database wordt automatisch opgezet door the  JPA Hibernate in the application.properties, 
+maar als je de tabellen manueel wilt op stellen kan dit:
 
 Voor het opzetten van de database, kun je de volgende SQL-scripts gebruiken. Dit betreft de tabellen voor `rides`, `vehicle`, `users` en `roles` die je in de applicatie nodig hebt.
 
