@@ -10,19 +10,25 @@ Content-Type: application/json
 }
 
 
-### 📌 Request a Ride (without query param)
-POST http://localhost:8080/api/rides/request/{user}/{vehicleId}
+### 📌 Request a Ride (without query param) --> user/vehicleId
+POST http://localhost:8080/api/rides/request/{userId}/{vehicleId}
 Content-Type: application/json
 
 {
-  "rideName": "City Center to Airport",
-  "rideStatus": "REQUESTED",
-  "rideDescription": "Late night ride to the airport",
-  "ridePrice": 56.20,
-  "location": {
-    "latitude": 50.850346,
-    "longitude": 4.351721,
-    "address": "Belgium, Brussels"
+  "rideName": "Morning Commute",
+  "ridePrice": 12.50,
+  "rideDescription": "Going to work",
+  "pickupLocation": {
+    "address": "123 Main St",
+    "city": "Amsterdam",
+    "latitude": 52.3676,
+    "longitude": 4.9041
+  },
+  "dropoffLocation": {
+    "address": "456 Market St",
+    "city": "Rotterdam",
+    "latitude": 51.9225,
+    "longitude": 4.4792
   }
 }
 
@@ -43,8 +49,13 @@ DELETE http://localhost:8080/api/rides/{rideId}
 PUT http://localhost:8080/api/rides/end/{rideId}
 
 ### 7. RIDE History/logs (when ride is completed) - {rideId}
-GET http://localhost:8080/api/rides/history/{rideId}
+GET http://localhost:8080/api/rides/history/{userId}
 
+### 8. Ride by User id - {userId}
+GET http://localhost:8080/api/rides/user/{userId}
+
+### 10. cancel ride - /{rideId}/cancel
+PUT http://localhost:8080/api/rides/{rideId}/cancel
 
 ### 🚘 VEHICLES 🚘 ###
 GET http://localhost:8080/api/vehicles
@@ -81,5 +92,7 @@ content-type: application/json
   "vehicleImage": null
 }
 
-###
+### Vehicle By Availabile Status
+GET http://localhost:8080/api/vehicles/available
+
 

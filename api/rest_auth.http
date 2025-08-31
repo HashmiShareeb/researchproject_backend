@@ -5,10 +5,10 @@ POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
 {
-  "username": "randomuser1",
-  "password": "password123",
-  "email": "randomuser1@example.com",
-  "roles": ["USER"]
+  "username": "adminUser",
+  "password": "adminPass123",
+  "email": "admin@example.com",
+  "roles": ["admin"]
 }
 
 ###
@@ -18,8 +18,8 @@ POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "shareebhashmi",
-  "password": "shareeb123"
+  "username": "shmi",
+  "password": "s123"
 }
 
 
@@ -29,8 +29,8 @@ POST http://localhost:8080/api/auth/logout
 Content-Type: application/json
 
 {
-  "username": "shareebhashmi",
-  "password": "shareeb123"
+  "username": "shmi",
+  "password": "s123"
 }
 
 ###
@@ -38,7 +38,7 @@ PUT http://localhost:8080/api/admin/assign-role
 Content-Type: application/json
 
 {
-  "username": "shareebhashmi",
+  "username": "shmi",
   "roles": ["ADMIN"]
 }
 
