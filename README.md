@@ -69,8 +69,8 @@ Pas indien nodig het bestand `application.properties` of `application.yml` aan v
 spring.datasource.url=jdbc:postgresql://localhost:5432/{database_name}
 spring.datasource.username=postgres
 spring.datasource.password=example
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.datasource.driver-class-name=org.postgresql.Driver //optioneel
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect //belangerijk voor lokaal te laten draaien!
 spring.jpa.hibernate.ddl-auto=update
 ```
 
